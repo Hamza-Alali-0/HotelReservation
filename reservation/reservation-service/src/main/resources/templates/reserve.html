@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Créer une réservation</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{--accent:#1976d2;--muted:#666}
+    body{font-family:Inter,Segoe UI,Arial,sans-serif;margin:24px;color:#222}
+    h1{font-size:24px;margin-bottom:12px}
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:12px 0}
+    .card{border:1px solid #e6e6e6;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .12s,box-shadow .12s}
+    .card:hover{transform:translateY(-4px);box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+    .card.selected{border-color:var(--accent);box-shadow:0 8px 24px rgba(25,118,210,0.12)}
+    .card h3{margin:0 0 6px;font-size:18px}
+    .card p{margin:0;color:var(--muted);font-size:14px}
+    .card .meta{margin-top:10px;font-weight:600}
+    .form-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;align-items:flex-start}
+    .form-row label{display:block}
+    .vertical-fields{display:flex;flex-direction:column;gap:10px;min-width:260px}
+    input[type=text],input[type=date],select{padding:8px;border:1px solid #ddd;border-radius:6px;width:100%;box-sizing:border-box}
+    button{background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+    .back{margin-left:8px;text-decoration:none;color:var(--accent)}
+    /* 3D card flip styles for payment modal */
+    .card-3d{perspective:1000px}
+    .card-inner{width:360px;height:220px;transition:transform .6s;transform-style:preserve-3d;position:relative}
+    .card-inner.flipped{transform:rotateY(180deg)}
+    .card-face{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;overflow:hidden}
+    .credit-card-front{padding:18px;color:#fff}
+    .credit-card-back{transform:rotateY(180deg);background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);color:#fff;padding:18px;display:flex;flex-direction:column}
+    .magstripe{height:46px;background:#222;margin-top:8px;border-radius:4px}
+    .signature{background:#fff;color:#000;padding:6px;border-radius:4px;margin-top:18px;display:flex;justify-content:space-between;align-items:center}
+  </style>
+</head>
+<body>
+  <h1>Choisissez un hôtel</h1>
+
+  <div class="cards" id="hotelCards">
+    <div th:each="h : ${hotels}" class="card" th:data-id="${h.id}" onclick="selectHotel(this)">
+      <div>
+        <h3 th:text="${h.name}">Hotel Name</h3>
+        <p th:text="${h.location}">Location</p>
+      </div>
+      <div class="meta">Voir les chambres</div>
+    </div>
+  </div>
+
+  <h1 style="margin-top:18px">Détails de la réservation</h1>
+  <form id="reserveForm" action="/ui/reserve" method="post">
+    <input type="hidden" id="hotelIdInput" name="hotelId" required />
+    <div class="form-row">
+      <label style="min-width:220px">Chambre
+        <select id="roomSelect" name="roomId" required>
+          <option th:each="r : ${rooms}" th:value="${r.id}" th:text="${r.roomNumber + ' — ' + r.capacity + ' pers — ' + r.price + '€'}"></option>
+        </select>
+      </label>
+
+      <div class="vertical-fields">
+        <label>Nom du client
+          <input type="text" name="customerName" required placeholder="Nom complet"/>
+        </label>
+
+        <label>Check-in
+          <input type="date" name="checkin" required />
+        </label>
+
+        <label>Check-out
+          <input type="date" name="checkout" required />
+        </label>
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <button type="submit">Réserver</button>
+      <a class="back" href="/">Retour</a>
+    </div>
+  </form>
+
+  <script>
+    const hotelCards = document.getElementById('hotelCards');
+    const roomSelect = document.getElementById('roomSelect');
+    const hotelIdInput = document.getElementById('hotelIdInput');
+
+    // initialize: if there is a rooms list and a first hotel, select it
+    (function init(){
+      const firstCard = hotelCards.querySelector('.card');
+      if(firstCard){ selectCard(firstCard); }
+    })();
+
+    function selectCard(card){
+      // visual
+      hotelCards.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
+      card.classList.add('selected');
+      const hid = card.getAttribute('data-id');
+      hotelIdInput.value = hid;
+      // load rooms for hotel
+      fetch('/ui/rooms?hotelId=' + hid)
+        .then(r=>r.json())
+        .then(list=>{
+          roomSelect.innerHTML = '';
+          if(list.length===0){
+            const opt = document.createElement('option'); opt.textContent='Aucune chambre'; opt.disabled=true; roomSelect.appendChild(opt); return;
+          }
+          for(const r of list){
+            const opt = document.createElement('option');
+            opt.value = r.id;
+            opt.textContent = r.roomNumber + ' — ' + r.capacity + ' pers — ' + r.price + '€' + (r.available? '': ' (indisponible)');
+            if(!r.available) opt.disabled = true;
+            roomSelect.appendChild(opt);
+          }
+        })
+        .catch(err=>{ console.error(err); });
+    }
+
+    window.selectHotel = function(el){ selectCard(el); }
+  </script>
+
+  <!-- Payment modal (hidden) -->
+  <div id="paymentModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);align-items:center;justify-content:center;z-index:9999">
+    <div style="Background:#fff;width:920px;max-width:95%;border-radius:12px;display:flex;gap:20px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+      <!-- Card preview (left) -->
+      <div style="flex:1;min-width:320px;display:flex;align-items:center;justify-content:center">
+        <div class="card-3d">
+          <div class="card-inner" id="cardInner">
+            <div class="card-face credit-card-front" style="width:360px;height:220px;border-radius:12px;background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);">
+              <div style="padding:18px;color:#fff;position:relative;height:100%">
+                <div style="width:46px;height:36px;background:linear-gradient(135deg,#d4af37,#f2d675);border-radius:6px;margin-bottom:12px"></div>
+                <div id="displayCardNumber" style="font-size:20px;letter-spacing:3px;margin-top:10px">•••• •••• •••• ••••</div>
+                <div style="display:flex;justify-content:space-between;margin-top:18px">
+                  <div>
+                    <div style="font-size:10px;opacity:0.8">Card Holder</div>
+                    <div id="displayCardHolder" style="font-weight:600">YOUR NAME</div>
+                  </div>
+                  <div>
+                    <div style="font-size:10px;opacity:0.8">Expires</div>
+                    <div id="displayExpiry" style="font-weight:600">MM/YY</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-face credit-card-back" style="width:360px;height:220px;border-radius:12px;">
+              <div style="color:#fff">
+                <div class="magstripe"></div>
+                <div class="signature">
+                  <div style="font-size:12px;color:#666">Signature</div>
+                  <div id="displayCvv" style="font-weight:700;letter-spacing:3px">•••</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment form (right) -->
+      <div style="width:420px;max-width:50%">
+        <h3 style="margin-top:4px;margin-bottom:10px">Simuler le paiement par carte</h3>
+        <form id="paymentForm">
+          <div style="margin-bottom:10px">
+            <label style="display:block;margin-bottom:6px">Card number</label>
+            <input id="cardNumberModal" type="text" maxlength="19" placeholder="1234 5678 9012 3456" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px" required />
+          </div>
+          <div style="margin-bottom:10px">
+            <label style="display:block;margin-bottom:6px">Card holder</label>
+            <input id="cardHolderModal" type="text" placeholder="JOHN DOE" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px" required />
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <div style="flex:1">
+              <label style="display:block;margin-bottom:6px">Expiry</label>
+              <input id="expiryModal" type="text" maxlength="5" placeholder="MM/YY" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px" required />
+            </div>
+            <div style="width:110px">
+              <label style="display:block;margin-bottom:6px">CVV</label>
+              <input id="cvvModal" type="text" maxlength="4" placeholder="123" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px" required />
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;align-items:center">
+            <button id="processPaymentBtn" type="submit" style="background:#1976d2;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer">Payer</button>
+            <button id="cancelPaymentBtn" type="button" style="background:#eee;border:none;padding:10px 14px;border-radius:8px;cursor:pointer">Annuler</button>
+            <div id="paymentStatus" style="margin-left:8px;color:#1976d2;font-weight:600"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // intercept reservation submit and open payment modal
+    const reserveForm = document.getElementById('reserveForm');
+    const paymentModal = document.getElementById('paymentModal');
+    const paymentForm = document.getElementById('paymentForm');
+    const processPaymentBtn = document.getElementById('processPaymentBtn');
+    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+    const paymentStatus = document.getElementById('paymentStatus');
+
+    let pendingReservation = null; // will hold form data until payment completes
+
+    reserveForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      // collect reservation data
+      const fd = new FormData(reserveForm);
+      pendingReservation = {};
+      for(const [k,v] of fd.entries()){ pendingReservation[k]=v; }
+      // show modal
+      paymentModal.style.display = 'flex';
+      paymentStatus.textContent = '';
+      // prefill card holder with customer name
+      document.getElementById('cardHolderModal').value = (pendingReservation.customerName || '').toUpperCase();
+      document.getElementById('displayCardHolder').textContent = (pendingReservation.customerName || 'YOUR NAME').toUpperCase();
+    });
+
+    cancelPaymentBtn.addEventListener('click', ()=>{ paymentModal.style.display='none'; });
+
+    // card preview binding
+    const cn = document.getElementById('cardNumberModal');
+    const ch = document.getElementById('cardHolderModal');
+    const ex = document.getElementById('expiryModal');
+    const cv = document.getElementById('cvvModal');
+    const displayCardNumber = document.getElementById('displayCardNumber');
+    const displayCardHolder = document.getElementById('displayCardHolder');
+    const displayExpiry = document.getElementById('displayExpiry');
+    const displayCvv = document.getElementById('displayCvv');
+    const cardInner = document.getElementById('cardInner');
+
+    cn.addEventListener('input', function(e){ let v = e.target.value.replace(/\s/g,''); let fmt = v.match(/.{1,4}/g)?.join(' ')||v; e.target.value = fmt; displayCardNumber.textContent = fmt || '•••• •••• •••• ••••'; });
+    ch.addEventListener('input', function(e){ displayCardHolder.textContent = e.target.value.toUpperCase() || 'YOUR NAME'; });
+    ex.addEventListener('input', function(e){ let v = e.target.value.replace(/\D/g,''); if(v.length>=2) v = v.slice(0,2) + '/' + v.slice(2,4); e.target.value = v; displayExpiry.textContent = v || 'MM/YY'; });
+
+    // flip card on CVV focus and show CVV on the back
+    cv.addEventListener('focus', function(){ cardInner.classList.add('flipped'); });
+    cv.addEventListener('blur', function(){ cardInner.classList.remove('flipped'); });
+    cv.addEventListener('input', function(e){ let v = e.target.value.replace(/\D/g,''); displayCvv.textContent = v || '•••'; });
+
+    paymentForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(!pendingReservation){ alert('Aucune réservation en attente'); paymentModal.style.display='none'; return; }
+      // simple client-side validation for card fields
+      if(cn.value.replace(/\s/g,'').length < 12){ alert('Numéro de carte invalide'); return; }
+      if(!ch.value.trim()){ alert('Nom de titulaire requis'); return; }
+
+      processPaymentBtn.disabled = true; paymentStatus.textContent = 'Traitement...';
+      // simulate payment delay
+      setTimeout(()=>{
+        paymentStatus.textContent = 'Paiement simulé: réussi';
+        // submit reservation to server
+        const data = new URLSearchParams();
+        data.append('hotelId', pendingReservation.hotelId);
+        data.append('roomId', pendingReservation.roomId);
+        data.append('customerName', pendingReservation.customerName);
+        data.append('checkin', pendingReservation.checkin);
+        data.append('checkout', pendingReservation.checkout);
+
+        fetch('/ui/reserve', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: data.toString() })
+          .then(resp => {
+            if(resp.redirected){ window.location.href = resp.url; return; }
+            if(!resp.ok) return resp.text().then(t=>{ throw new Error(t||'Erreur serveur'); });
+            return resp.text();
+          })
+          .catch(err=>{
+            alert('Erreur lors de la réservation: ' + (err.message || err));
+            processPaymentBtn.disabled = false; paymentStatus.textContent = '';
+          });
+
+      }, 1200);
+    });
+  </script>
+</body>
+</html>

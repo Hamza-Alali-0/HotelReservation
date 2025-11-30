@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Système de réservation d'hôtel</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; margin: 40px; }
+    h1 { font-size: 24px; }
+    ul { font-size: 16px; }
+    a.button { display:inline-block; padding:8px 12px; background:#1976d2; color:#fff; text-decoration:none; border-radius:4px; }
+  </style>
+</head>
+<body>
+  <h1>Système de réservation d'hôtel</h1>
+  <h3>Objectif :</h3>
+  <ul>
+    <li><strong>hotel-service</strong> : expose les hôtels et chambres via <strong>Spring Data REST</strong>.</li>
+    <li><strong>reservation-service</strong> : utilise <strong>FeignClient</strong> pour consulter les disponibilités et créer des réservations.</li>
+    <li><strong>Extension</strong> : Historique des réservations + gestion de paiement fictif.</li>
+  </ul>
+
+  <p>
+    <a class="button" href="/ui/reserve">Créer une réservation</a>
+    <a class="button" href="/ui/history" style="background:#4caf50; margin-left:8px;">Voir l'historique</a>
+  </p>
+
+  <p>Services (direct):</p>
+  <ul>
+    <li>Hotels: <a href="http://localhost:8090/hotels">http://localhost:8090/hotels</a></li>
+    <li>Rooms: <a href="http://localhost:8090/rooms">http://localhost:8090/rooms</a></li>
+    <li>Reservations (API): <a href="http://localhost:8081/reservations">http://localhost:8081/reservations</a></li>
+  </ul>
+</body>
+</html>
