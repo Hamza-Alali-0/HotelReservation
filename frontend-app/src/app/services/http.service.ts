@@ -10,10 +10,7 @@ export class HttpService {
 
   // Point to API Gateway running on localhost:8080
   BASE_URL = isDevMode() ? '//localhost:8080/api/' : '/api/'
-  headers = new HttpHeaders({
-  'Content-Type': 'application/json',
-  'Authorization': 'Bearer <token>',
-  })
+  // headers will be constructed per-request so we can include the auth token from sessionStorage
 
   public get(endpoint: string, data?: any) {
     return this.httpRequest(endpoint, 'get', data)
@@ -33,10 +30,24 @@ export class HttpService {
 
   private httpRequest(endpoint: string, method: string, data = null) {
     try {
-      const option = {
-        body: data,
+      const token = sessionStorage.getItem('token');
+      const headers = token ? new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }) : new HttpHeaders({ 'Content-Type': 'application/json' });
+      const url = `${this.BASE_URL}${endpoint}`;
+      // Use specific HttpClient methods so TypeScript infers the response body (not HttpEvent)
+      if (method === 'get') {
+        const params = data || {};
+        return this.http.get<any>(url, { headers, params });
       }
-      return this.http.request(method, `${this.BASE_URL}${endpoint}`,option)
+      if (method === 'post') {
+        return this.http.post<any>(url, data, { headers });
+      }
+      if (method === 'put') {
+        return this.http.put<any>(url, data, { headers });
+      }
+      if (method === 'delete') {
+        return this.http.delete<any>(url, { headers, body: data });
+      }
+      return this.http.get<any>(url, { headers });
     } catch (err: any) {
         console.log(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: `, data)
         console.dir(err)

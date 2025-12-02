@@ -9,10 +9,10 @@ public interface HotelClient {
     @GetMapping("/rooms/{id}")
     RoomDto getRoomById(@PathVariable("id") Long id);
 
-    @GetMapping("/api/hotels")
+    @GetMapping("/hotels")
     java.util.List<HotelDto> getHotels();
 
-    @GetMapping("/api/rooms")
+    @GetMapping("/rooms")
     java.util.List<RoomDto> getRooms();
 
     record RoomDto(Long id, Long hotelId, String roomNumber, Integer capacity, Double price, Boolean available) {}

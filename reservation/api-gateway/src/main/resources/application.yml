@@ -17,15 +17,21 @@ spring:
             - Path=/rooms/**
             - Path=/api/hotels/**
             - Path=/api/rooms/**
-          filters:
-            - StripPrefix=1
+          # forwarding paths as-is so backend controllers receive the same path
         - id: reservations
           uri: lb://RESERVATION-SERVICE
           predicates:
             - Path=/reservations/**
             - Path=/api/reservations/**
-          filters:
-            - StripPrefix=1
+            - Path=/auth/**
+            - Path=/api/auth/**
+            - Path=/stay/**
+            - Path=/api/stay/**
+            - Path=/order/**
+            - Path=/api/order/**
+            - Path=/user/**
+            - Path=/api/user/**
+          # forwarding paths as-is so backend controllers receive the same path
 
 eureka:
   client:
