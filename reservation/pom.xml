@@ -23,6 +23,7 @@
 		<module>api-gateway</module>
 		<module>hotel-service</module>
 		<module>reservation-service</module>
+		<module>auth-service</module>
 	</modules>
 
 	<dependencyManagement>

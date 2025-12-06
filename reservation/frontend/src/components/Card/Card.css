@@ -1,0 +1,149 @@
+/* ================================================
+   CARD COMPONENT - Premium Card Styles
+   ================================================ */
+
+.card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  overflow: hidden;
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.card-selected {
+  border-color: #c9a861;
+  box-shadow: 0 10px 30px rgba(201, 168, 97, 0.2);
+}
+
+/* Card Header */
+.card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.card-header h3 {
+  font-size: 1.15rem;
+  color: #0c1b38;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Card Body */
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Card Footer */
+.card-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  background: #fafbfc;
+}
+
+/* Card Image */
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-image-overlay {
+  position: relative;
+}
+
+.card-image-overlay::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+}
+
+/* Card Variants */
+.card-bordered {
+  border: 1px solid #e5e7eb;
+  box-shadow: none;
+}
+
+.card-bordered:hover {
+  border-color: #c9a861;
+  box-shadow: 0 8px 25px rgba(201, 168, 97, 0.15);
+}
+
+.card-premium {
+  background: linear-gradient(145deg, white 0%, #fafbfc 100%);
+  border: 1px solid rgba(201, 168, 97, 0.2);
+}
+
+.card-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #c9a861, #b8944d);
+}
+
+.card-dark {
+  background: linear-gradient(135deg, #0c1b38, #1a365d);
+  color: white;
+}
+
+.card-dark .card-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.card-dark h3 {
+  color: white;
+}
+
+/* Card Sizes */
+.card-sm {
+  border-radius: 12px;
+}
+
+.card-sm .card-body {
+  padding: 1rem;
+}
+
+.card-lg .card-body {
+  padding: 2rem;
+}
+
+.card-lg .card-image {
+  height: 250px;
+}
+
+/* Interactive Card */
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-clickable:active {
+  transform: translateY(-2px);
+}
+
+/* Card with Gradient Border */
+.card-gradient-border {
+  position: relative;
+  background: white;
+  z-index: 1;
+}
+
+.card-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, #c9a861, #0c1b38);
+  border-radius: 18px;
+  z-index: -1;
+}

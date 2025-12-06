@@ -2,33 +2,536 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <title>Système de réservation d'hôtel</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hotel Reservations - Find Your Perfect Stay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, Helvetica, sans-serif; margin: 40px; }
-    h1 { font-size: 24px; }
-    ul { font-size: 16px; }
-    a.button { display:inline-block; padding:8px 12px; background:#1976d2; color:#fff; text-decoration:none; border-radius:4px; }
+    :root {
+      --primary: #003580;
+      --primary-dark: #00224f;
+      --accent: #0071c2;
+      --success: #008009;
+      --warning: #febb02;
+      --text-dark: #1a1a1a;
+      --text-muted: #6b7280;
+      --bg-light: #f5f7fa;
+      --white: #ffffff;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+      --radius: 12px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-dark);
+      background: var(--bg-light);
+      line-height: 1.6;
+    }
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: var(--white);
+      padding: 16px 0;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    
+    .nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    
+    .nav a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    
+    .nav a:hover {
+      opacity: 0.8;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #003580 0%, #0057b8 100%);
+      color: var(--white);
+      padding: 80px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><path d="M0,300 Q300,100 600,300 T1200,300 L1200,600 L0,600 Z" fill="rgba(255,255,255,0.05)"/></svg>') no-repeat center;
+      background-size: cover;
+      opacity: 0.6;
+    }
+    
+    .hero-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+    
+    .hero p {
+      font-size: 20px;
+      opacity: 0.95;
+      margin-bottom: 40px;
+    }
+    
+    /* Search Bar */
+    .search-bar {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr auto;
+      gap: 16px;
+      align-items: end;
+    }
+    
+    .search-field {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .search-field label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+    
+    .search-field input,
+    .search-field select {
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    
+    .search-field input:focus,
+    .search-field select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    
+    .search-btn {
+      background: linear-gradient(135deg, var(--accent) 0%, #005aa3 100%);
+      color: var(--white);
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(0,113,194,0.3);
+    }
+    
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,113,194,0.4);
+    }
+    
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+    
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 32px;
+      color: var(--text-dark);
+    }
+    
+    /* Action Cards */
+    .action-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+    
+    .action-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 40px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .action-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .action-card.primary {
+      background: linear-gradient(135deg, var(--accent) 0%, #005aa3 100%);
+      color: var(--white);
+    }
+    
+    .action-card.secondary {
+      background: linear-gradient(135deg, #008009 0%, #006607 100%);
+      color: var(--white);
+    }
+    
+    .action-card-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    
+    .action-card h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    
+    .action-card p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
+    /* Service Cards */
+    .service-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+    
+    .service-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      border: 2px solid transparent;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    
+    .service-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    
+    .service-card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--accent) 0%, #005aa3 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 20px;
+    }
+    
+    .service-card h4 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    
+    .service-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    
+    .service-link {
+      display: inline-block;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+    
+    .service-link:hover {
+      text-decoration: underline;
+    }
+    
+    /* Architecture Section */
+    .architecture {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .architecture h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--text-dark);
+    }
+    
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    
+    .arch-item {
+      text-align: center;
+      padding: 20px;
+      background: var(--bg-light);
+      border-radius: 10px;
+      border: 2px solid #e5e7eb;
+    }
+    
+    .arch-item-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 18px;
+    }
+    
+    .arch-item h5 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    
+    .arch-item p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    
+    /* Footer */
+    .footer {
+      background: var(--primary-dark);
+      color: var(--white);
+      padding: 40px 24px;
+      margin-top: 60px;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .footer p {
+      opacity: 0.8;
+    }
+    
+    /* Responsive */
+    @media (max-width: 968px) {
+      .search-bar {
+        grid-template-columns: 1fr;
+      }
+      
+      .action-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .service-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .arch-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .hero h1 {
+        font-size: 36px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Système de réservation d'hôtel</h1>
-  <h3>Objectif :</h3>
-  <ul>
-    <li><strong>hotel-service</strong> : expose les hôtels et chambres via <strong>Spring Data REST</strong>.</li>
-    <li><strong>reservation-service</strong> : utilise <strong>FeignClient</strong> pour consulter les disponibilités et créer des réservations.</li>
-    <li><strong>Extension</strong> : Historique des réservations + gestion de paiement fictif.</li>
-  </ul>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">🏨 HotelBook</div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/ui/reserve">Reserve</a>
+        <a href="/ui/history">My Bookings</a>
+      </nav>
+    </div>
+  </header>
 
-  <p>
-    <a class="button" href="/ui/reserve">Créer une réservation</a>
-    <a class="button" href="/ui/history" style="background:#4caf50; margin-left:8px;">Voir l'historique</a>
-  </p>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Find your next stay</h1>
+      <p>Search deals on hotels, homes, and much more...</p>
+      
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <div class="search-field">
+          <label>Where are you going?</label>
+          <input type="text" placeholder="City, hotel name, or landmark" />
+        </div>
+        <div class="search-field">
+          <label>Check-in</label>
+          <input type="date" />
+        </div>
+        <div class="search-field">
+          <label>Check-out</label>
+          <input type="date" />
+        </div>
+        <div class="search-field">
+          <label>Guests</label>
+          <select>
+            <option>1 guest</option>
+            <option>2 guests</option>
+            <option>3 guests</option>
+            <option>4+ guests</option>
+          </select>
+        </div>
+        <button class="search-btn">Search</button>
+      </div>
+    </div>
+  </section>
 
-  <p>Services (direct):</p>
-  <ul>
-    <li>Hotels: <a href="http://localhost:8090/hotels">http://localhost:8090/hotels</a></li>
-    <li>Rooms: <a href="http://localhost:8090/rooms">http://localhost:8090/rooms</a></li>
-    <li>Reservations (API): <a href="http://localhost:8081/reservations">http://localhost:8081/reservations</a></li>
-  </ul>
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Action Cards -->
+    <div class="action-cards">
+      <a href="/ui/reserve" class="action-card primary">
+        <div class="action-card-icon">🔍</div>
+        <h3>Create Reservation</h3>
+        <p>Browse available hotels and book your perfect room in minutes</p>
+      </a>
+      
+      <a href="/ui/history" class="action-card secondary">
+        <div class="action-card-icon">📋</div>
+        <h3>View History</h3>
+        <p>Check your past and upcoming reservations</p>
+      </a>
+    </div>
+
+    <!-- Service Cards -->
+    <h2 class="section-title">Microservices Architecture</h2>
+    <div class="service-cards">
+      <div class="service-card">
+        <div class="service-card-header">
+          <div class="service-icon">🏨</div>
+          <h4>Hotel Service</h4>
+        </div>
+        <p>Browse hotels and rooms via Spring Data REST endpoints</p>
+        <a href="http://localhost:8090/hotels" class="service-link" target="_blank">View Hotels →</a><br>
+        <a href="http://localhost:8090/rooms" class="service-link" target="_blank">View Rooms →</a>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-card-header">
+          <div class="service-icon">📝</div>
+          <h4>Reservation Service</h4>
+        </div>
+        <p>Create and manage reservations with FeignClient integration</p>
+        <a href="http://localhost:8081/reservations" class="service-link" target="_blank">View API →</a>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-card-header">
+          <div class="service-icon">🔌</div>
+          <h4>API Gateway</h4>
+        </div>
+        <p>Unified access point for all microservices with routing</p>
+        <a href="http://localhost:8080/hotels" class="service-link" target="_blank">Gateway Endpoint →</a>
+      </div>
+    </div>
+
+    <!-- Architecture Overview -->
+    <div class="architecture">
+      <h3>System Architecture</h3>
+      <div class="arch-grid">
+        <div class="arch-item">
+          <div class="arch-item-icon">🔍</div>
+          <h5>Eureka Server</h5>
+          <p>Port 8761</p>
+        </div>
+        <div class="arch-item">
+          <div class="arch-item-icon">🌐</div>
+          <h5>API Gateway</h5>
+          <p>Port 8080</p>
+        </div>
+        <div class="arch-item">
+          <div class="arch-item-icon">🏨</div>
+          <h5>Hotel Service</h5>
+          <p>Port 8090</p>
+        </div>
+        <div class="arch-item">
+          <div class="arch-item-icon">📋</div>
+          <h5>Reservation Service</h5>
+          <p>Port 8081</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2025 HotelBook. Microservices reservation system with Spring Boot & Spring Cloud.</p>
+    </div>
+  </footer>
 </body>
 </html>

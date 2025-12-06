@@ -10,28 +10,34 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: hotels
+        - id: hotel-service
           uri: lb://HOTEL-SERVICE
           predicates:
-            - Path=/hotels/**
-            - Path=/rooms/**
-            - Path=/api/hotels/**
-            - Path=/api/rooms/**
-          # forwarding paths as-is so backend controllers receive the same path
-        - id: reservations
+            - Path=/api/hotels/**, /api/rooms/**
+        - id: reservation-service
           uri: lb://RESERVATION-SERVICE
           predicates:
-            - Path=/reservations/**
             - Path=/api/reservations/**
-            - Path=/auth/**
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
             - Path=/api/auth/**
-            - Path=/stay/**
-            - Path=/api/stay/**
-            - Path=/order/**
-            - Path=/api/order/**
-            - Path=/user/**
-            - Path=/api/user/**
-          # forwarding paths as-is so backend controllers receive the same path
+      globalcors:
+        corsConfigurations:
+          "[/**]":
+            allowedOrigins:
+              - "http://localhost:5173"
+              - "http://localhost:3000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+            maxAge: 3600
 
 eureka:
   client:

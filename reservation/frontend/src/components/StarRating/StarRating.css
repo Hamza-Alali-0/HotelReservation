@@ -1,0 +1,126 @@
+/* ================================================
+   STAR RATING - Premium Rating Component
+   ================================================ */
+
+.star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.star {
+  display: inline-block;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+/* Size Variants */
+.star-small {
+  font-size: 14px;
+}
+
+.star-medium {
+  font-size: 20px;
+}
+
+.star-large {
+  font-size: 28px;
+}
+
+/* Star States */
+.star-full {
+  color: #c9a861;
+  text-shadow: 0 2px 4px rgba(201, 168, 97, 0.3);
+}
+
+.star-half {
+  background: linear-gradient(90deg, #c9a861 50%, #e5e7eb 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.star-empty {
+  color: #e5e7eb;
+}
+
+/* Interactive Stars (for rating input) */
+.star-interactive {
+  cursor: pointer;
+}
+
+.star-interactive:hover {
+  transform: scale(1.15);
+}
+
+.star-interactive:hover ~ .star {
+  color: #e5e7eb;
+}
+
+.star-rating.interactive:hover .star {
+  color: #c9a861;
+}
+
+/* Rating Number Display */
+.rating-number {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.rating-number-large {
+  font-size: 1.1rem;
+  color: #0c1b38;
+}
+
+/* Rating with Background Badge */
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(201, 168, 97, 0.1);
+  border-radius: 8px;
+  font-weight: 600;
+  color: #0c1b38;
+}
+
+.rating-badge .star {
+  color: #c9a861;
+}
+
+.rating-badge-premium {
+  background: linear-gradient(135deg, #c9a861, #b8944d);
+  color: white;
+}
+
+.rating-badge-premium .star {
+  color: white;
+}
+
+/* Review Count */
+.review-count {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  font-weight: 400;
+  margin-left: 0.35rem;
+}
+
+/* Compact Rating Display */
+.rating-compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.rating-compact .star-icon {
+  color: #c9a861;
+  font-size: 1rem;
+}
+
+.rating-compact .rating-value {
+  font-weight: 600;
+  color: #1f2937;
+}

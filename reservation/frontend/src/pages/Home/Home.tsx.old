@@ -1,0 +1,276 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Button, Input } from '@/components';
+import { heroImages, destinationImages, hotelImages } from '@/assets/images';
+import type { SearchParams } from '@/types';
+import './Home.css';
+
+export const Home = () => {
+  const [searchParams, setSearchParams] = useState<SearchParams>({
+    destination: '',
+    checkin: '',
+    checkout: '',
+    guests: 1,
+  });
+
+  const handleSearch = () => {
+    console.log('Searching with params:', searchParams);
+  };
+
+  const featuredDestinations = [
+    { name: 'Paris', hotels: 1234, image: destinationImages.paris },
+    { name: 'Tokyo', hotels: 892, image: destinationImages.tokyo },
+    { name: 'Dubai', hotels: 756, image: destinationImages.dubai },
+    { name: 'New York', hotels: 1567, image: destinationImages.newYork },
+    { name: 'London', hotels: 1098, image: destinationImages.london },
+    { name: 'Bali', hotels: 654, image: destinationImages.bali },
+  ];
+
+  const featuredHotels = [
+    { name: 'Grand Luxury Hotel', location: 'Paris, France', rating: 9.2, price: 299, image: hotelImages.hotel1 },
+    { name: 'Ocean View Resort', location: 'Bali, Indonesia', rating: 9.5, price: 189, image: hotelImages.hotel2 },
+    { name: 'City Center Plaza', location: 'Tokyo, Japan', rating: 8.8, price: 249, image: hotelImages.hotel3 },
+  ];
+
+  return (
+    <div className="home-premium">
+      {/* Cinematic Hero Section */}
+      <section className="hero-cinematic">
+        <div className="hero-background">
+          <img src={heroImages.main} alt="Luxury Hotel" className="hero-image" />
+          <div className="hero-overlay"></div>
+        </div>
+        
+        <div className="hero-content-premium">
+          <h1 className="hero-title-xl fade-in">
+            Find Your Perfect Stay
+          </h1>
+          <p className="hero-subtitle-lg fade-in">
+            Discover amazing deals on hotels, resorts, and unique stays worldwide
+          </p>
+
+          {/* Premium Search Bar */}
+          <div className="search-bar-premium glass">
+            <div className="search-field-premium">
+              <label className="search-label">
+                <span className="search-icon">📍</span>
+                Where are you going?
+              </label>
+              <input
+                type="text"
+                className="search-input-premium"
+                placeholder="City, hotel name, or landmark"
+                value={searchParams.destination}
+                onChange={(e) => setSearchParams({ ...searchParams, destination: e.target.value })}
+              />
+            </div>
+            
+            <div className="search-field-premium">
+              <label className="search-label">
+                <span className="search-icon">📅</span>
+                Check-in
+              </label>
+              <input
+                type="date"
+                className="search-input-premium"
+                value={searchParams.checkin}
+                onChange={(e) => setSearchParams({ ...searchParams, checkin: e.target.value })}
+              />
+            </div>
+            
+            <div className="search-field-premium">
+              <label className="search-label">
+                <span className="search-icon">📅</span>
+                Check-out
+              </label>
+              <input
+                type="date"
+                className="search-input-premium"
+                value={searchParams.checkout}
+                onChange={(e) => setSearchParams({ ...searchParams, checkout: e.target.value })}
+              />
+            </div>
+            
+            <div className="search-field-premium">
+              <label className="search-label">
+                <span className="search-icon">👤</span>
+                Guests
+              </label>
+              <select
+                className="search-input-premium"
+                value={searchParams.guests}
+                onChange={(e) => setSearchParams({ ...searchParams, guests: Number(e.target.value) })}
+              >
+                <option value={1}>1 guest</option>
+                <option value={2}>2 guests</option>
+                <option value={3}>3 guests</option>
+                <option value={4}>4+ guests</option>
+              </select>
+            </div>
+            
+            <Button onClick={handleSearch} size="lg" className="search-btn-premium glow-on-hover">
+              🔍 Search
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Destinations */}
+      <section className="featured-section">
+        <div className="container-xl">
+          <div className="section-header">
+            <h2 className="section-title-lg gradient-text">Explore Top Destinations</h2>
+            <p className="section-subtitle">Discover the world's most amazing places</p>
+          </div>
+
+          <div className="destinations-grid">
+            {featuredDestinations.map((dest, index) => (
+              <div key={index} className="destination-card scale-in" style={{animationDelay: `${index * 0.1}s`}}>
+                <div className="destination-image-wrapper">
+                  <img src={dest.image} alt={dest.name} className="destination-image img-hover-zoom" />
+                  <div className="destination-overlay"></div>
+                </div>
+                <div className="destination-content">
+                  <h3 className="destination-name">{dest.name}</h3>
+                  <p className="destination-hotels">{dest.hotels} hotels</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Hotels */}
+      <section className="featured-hotels-section">
+        <div className="container-xl">
+          <div className="section-header">
+            <h2 className="section-title-lg">Trending Hotels</h2>
+            <p className="section-subtitle">Handpicked hotels our guests love</p>
+          </div>
+
+          <div className="hotels-slider">
+            {featuredHotels.map((hotel, index) => (
+              <Link to="/reserve" key={index} className="hotel-card-premium">
+                <div className="hotel-image-wrapper-premium">
+                  <img src={hotel.image} alt={hotel.name} className="hotel-image-premium img-hover-zoom" />
+                  <div className="hotel-badge-premium">Featured</div>
+                  <div className="hotel-favorite">❤️</div>
+                </div>
+                <div className="hotel-content-premium">
+                  <div className="hotel-header-premium">
+                    <h3 className="hotel-name-premium">{hotel.name}</h3>
+                    <div className="hotel-rating-premium">
+                      <span className="rating-score">{hotel.rating}</span>
+                      <span className="rating-label">Excellent</span>
+                    </div>
+                  </div>
+                  <p className="hotel-location-premium">📍 {hotel.location}</p>
+                  <div className="hotel-footer-premium">
+                    <div className="hotel-amenities">
+                      <span>🏊</span>
+                      <span>🍽️</span>
+                      <span>📶</span>
+                      <span>💆</span>
+                    </div>
+                    <div className="hotel-price-premium">
+                      <span className="price-label-premium">from</span>
+                      <span className="price-amount-premium">${hotel.price}</span>
+                      <span className="price-unit">/night</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Actions */}
+      <section className="quick-actions-section">
+        <div className="container-xl">
+          <div className="action-cards-premium">
+            <Link to="/reserve" className="action-card-modern primary-gradient">
+              <div className="action-icon-premium">🔍</div>
+              <h3>Explore Hotels</h3>
+              <p>Browse thousands of hotels worldwide</p>
+              <span className="action-arrow">→</span>
+            </Link>
+
+            <Link to="/history" className="action-card-modern success-gradient">
+              <div className="action-icon-premium">📋</div>
+              <h3>My Bookings</h3>
+              <p>View your reservations and travel plans</p>
+              <span className="action-arrow">→</span>
+            </Link>
+
+            <div className="action-card-modern accent-gradient">
+              <div className="action-icon-premium">💰</div>
+              <h3>Best Deals</h3>
+              <p>Save up to 50% on select properties</p>
+              <span className="action-arrow">→</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Section */}
+      <section className="trust-section">
+        <div className="container">
+          <div className="trust-grid">
+            <div className="trust-item">
+              <div className="trust-number">1M+</div>
+              <div className="trust-label">Happy Guests</div>
+            </div>
+            <div className="trust-item">
+              <div className="trust-number">50K+</div>
+              <div className="trust-label">Hotels Worldwide</div>
+            </div>
+            <div className="trust-item">
+              <div className="trust-number">4.9</div>
+              <div className="trust-label">Average Rating</div>
+            </div>
+            <div className="trust-item">
+              <div className="trust-number">24/7</div>
+              <div className="trust-label">Customer Support</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="footer-premium">
+        <div className="container">
+          <div className="footer-content-premium">
+            <div className="footer-brand">
+              <div className="footer-logo">🏨 HotelBook</div>
+              <p className="footer-tagline">Your journey to perfect stays begins here</p>
+            </div>
+            <div className="footer-links">
+              <div className="footer-column">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Press</a>
+              </div>
+              <div className="footer-column">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Privacy</a>
+              </div>
+              <div className="footer-column">
+                <h4>Partners</h4>
+                <a href="#">List Property</a>
+                <a href="#">Affiliates</a>
+                <a href="#">API</a>
+              </div>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; 2025 HotelBook. Built with Spring Boot & React.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};

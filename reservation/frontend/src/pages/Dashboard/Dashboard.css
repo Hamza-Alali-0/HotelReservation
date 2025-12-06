@@ -1,0 +1,504 @@
+/* Premium Dashboard Styles */
+
+.dashboard {
+  min-height: 100vh;
+  background: #f7f8fa;
+}
+
+/* Header */
+.dashboard-header {
+  position: relative;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.header-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.header-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(26, 26, 46, 0.92) 0%,
+    rgba(26, 26, 46, 0.8) 100%
+  );
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.welcome-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #c9a227;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.header-content h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.header-content p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Container */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  margin-top: -60px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Analytics Dashboard - Premium Design */
+.analytics-dashboard {
+  margin-bottom: 2.5rem;
+}
+
+.analytics-main {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.metric-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 30px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 16px 40px rgba(0, 0, 0, 0.06);
+}
+
+.metric-card.primary {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: white;
+}
+
+.metric-card.primary .metric-title {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.metric-card.primary .sparkline {
+  color: #c9a227;
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.metric-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  letter-spacing: 0.01em;
+}
+
+.metric-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 20px;
+  background: rgba(201, 162, 39, 0.15);
+  color: #c9a227;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metric-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+.metric-indicator.positive {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.metric-indicator.neutral {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.metric-value-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.metric-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+.metric-card.primary .metric-number {
+  color: white;
+}
+
+.metric-card.success .metric-number {
+  color: #10b981;
+}
+
+.metric-card.warning .metric-number {
+  color: #f59e0b;
+}
+
+.metric-chart {
+  width: 80px;
+  height: 32px;
+}
+
+.sparkline {
+  width: 100%;
+  height: 100%;
+}
+
+.metric-footer {
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.metric-progress {
+  margin-top: 0.5rem;
+}
+
+.progress-track {
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.progress-fill.success {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.progress-fill.warning {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+/* Quick Actions */
+.quick-actions {
+  margin-bottom: 48px;
+}
+
+.quick-actions h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 24px;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.action-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.action-card:hover {
+  border-color: #c9a227;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.action-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f8f6f0, #f0ebe0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: #c9a227;
+}
+
+.action-card:hover .action-icon {
+  background: linear-gradient(135deg, #c9a227, #d4af37);
+}
+
+.action-card:hover .action-icon svg {
+  stroke: white;
+}
+
+.action-title {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.action-desc {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* Reservations Section */
+.reservations-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 36px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin-bottom: 60px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.section-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.btn-view-all {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #c9a227;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.btn-view-all:hover {
+  color: #b8941f;
+}
+
+/* Reservation Items */
+.reservations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reservation-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 20px;
+  padding: 20px;
+  background: #f7f8fa;
+  border-radius: 10px;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.reservation-item:hover {
+  background: #edf2f7;
+}
+
+.reservation-image {
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.reservation-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.reservation-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.reservation-dates {
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin-bottom: 2px;
+}
+
+.reservation-details {
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+.reservation-status {
+  text-align: right;
+}
+
+.status-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  border-radius: 100px;
+}
+
+.status-badge.paid {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.status-badge.pending {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 24px;
+}
+
+.empty-content h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #1a1a2e;
+  margin-bottom: 12px;
+}
+
+.empty-content p {
+  color: #718096;
+  margin-bottom: 28px;
+}
+
+.btn-explore {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  background: #c9a227;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-explore:hover {
+  background: #b8941f;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .analytics-main {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-container {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    height: 260px;
+  }
+
+  .header-content h1 {
+    font-size: 2rem;
+  }
+  
+  .metric-card {
+    padding: 1.25rem;
+  }
+  
+  .metric-number {
+    font-size: 2rem;
+  }
+
+  .reservation-item {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .reservation-image {
+    width: 100%;
+    height: 120px;
+  }
+
+  .reservation-status {
+    text-align: left;
+  }
+}

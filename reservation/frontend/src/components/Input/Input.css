@@ -1,0 +1,167 @@
+/* ================================================
+   INPUT COMPONENT - Premium Form Inputs
+   ================================================ */
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0c1b38;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.input-label .required {
+  color: #c9a861;
+}
+
+.input {
+  padding: 0.875rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  width: 100%;
+  background: #fafafa;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #c9a861;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(201, 168, 97, 0.1);
+}
+
+.input:hover:not(:focus) {
+  border-color: #d1d5db;
+}
+
+.input-error {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.input-error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.input-error-text {
+  font-size: 0.85rem;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+/* Disabled State */
+.input:disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Input Sizes */
+.input-sm {
+  padding: 0.625rem 0.875rem;
+  font-size: 0.9rem;
+}
+
+.input-lg {
+  padding: 1rem 1.25rem;
+  font-size: 1.1rem;
+}
+
+/* Input with Icon */
+.input-icon-wrapper {
+  position: relative;
+}
+
+.input-icon-wrapper .input {
+  padding-left: 2.75rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.input-icon-wrapper .input:focus + .input-icon,
+.input-icon-wrapper .input:focus ~ .input-icon {
+  color: #c9a861;
+}
+
+/* Textarea */
+textarea.input {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Select */
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+select.input:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23c9a861' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+/* Input Group (for addons) */
+.input-group {
+  display: flex;
+}
+
+.input-group .input {
+  border-radius: 0;
+}
+
+.input-group .input:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.input-group .input:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.input-addon {
+  padding: 0.875rem 1rem;
+  background: #f3f4f6;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.input-addon:first-child {
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+}
+
+.input-addon:last-child {
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+}

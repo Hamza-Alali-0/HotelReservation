@@ -1,0 +1,75 @@
+/* Signup Page - Uses Login.css as base + additional styles */
+@import '../Login/Login.css';
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-terms {
+  margin-bottom: 32px;
+}
+
+.terms-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #4a5568;
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.terms-checkbox input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: #c9a227;
+  flex-shrink: 0;
+}
+
+.terms-checkbox a {
+  color: #c9a227;
+  text-decoration: none;
+}
+
+.terms-checkbox a:hover {
+  text-decoration: underline;
+}
+
+/* Benefits List in Image Section */
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+}
+
+.benefits-list li {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 12px 0;
+  padding-left: 28px;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.benefits-list li:last-child {
+  border-bottom: none;
+}
+
+.benefits-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #c9a227;
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

@@ -1,0 +1,183 @@
+/* ================================================
+   SEARCH BAR - Premium Search Component
+   ================================================ */
+
+.search-bar {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-end;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.search-bar-fields {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1.5fr 1fr;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+.search-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.search-field label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0c1b38;
+}
+
+.field-icon {
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.field-label {
+  display: block;
+}
+
+.search-input {
+  padding: 0.875rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #1f2937;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  font-family: inherit;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #c9a861;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(201, 168, 97, 0.12);
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+/* Guest Selector Styling */
+.search-input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.search-input[type="number"]::-webkit-outer-spin-button,
+.search-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Date Input Styling */
+.search-input[type="date"] {
+  cursor: pointer;
+}
+
+.search-input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.search-input[type="date"]:hover::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+/* Search Button */
+.search-button {
+  background: linear-gradient(135deg, #c9a861 0%, #b8944d 100%);
+  color: white;
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(201, 168, 97, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 50px;
+}
+
+.search-button:hover {
+  background: linear-gradient(135deg, #b8944d 0%, #a68542 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(201, 168, 97, 0.45);
+}
+
+.search-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(201, 168, 97, 0.35);
+}
+
+/* Field Dividers (Visual Separator) */
+.search-field:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 1px;
+  background: #e5e7eb;
+}
+
+/* ================================================
+   RESPONSIVE DESIGN
+   ================================================ */
+
+@media (max-width: 1024px) {
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.25rem;
+  }
+
+  .search-bar-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .search-field::after {
+    display: none;
+  }
+
+  .search-button {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .search-bar {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .search-bar-fields {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .field-label {
+    display: inline;
+  }
+  
+  .search-input {
+    padding: 0.75rem 1rem;
+  }
+}
