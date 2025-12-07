@@ -18,8 +18,13 @@ export const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      await login({ email, password });
-      navigate("/dashboard");
+      const user = await login({ email, password });
+      // Redirect based on user role
+      if (user.role === "ADMIN") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err: any) {
       setError(err.message || "Invalid email or password. Please try again.");
     } finally {
@@ -36,6 +41,10 @@ export const Login: React.FC = () => {
       <div className="auth-container">
         {/* Left Side - Image */}
         <div className="auth-image">
+          <img
+            src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200&q=80"
+            alt="Luxury Hotel"
+          />
           <div className="auth-image-overlay"></div>
           <div className="auth-image-content">
             <span className="auth-tagline">Experience Luxury</span>
@@ -51,7 +60,6 @@ export const Login: React.FC = () => {
         <div className="auth-form-section">
           <div className="auth-form-container">
             <div className="auth-header">
-            
               <h1>Sign In</h1>
               <p>Enter your credentials to access your account</p>
             </div>

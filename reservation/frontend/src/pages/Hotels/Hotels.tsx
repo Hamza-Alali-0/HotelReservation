@@ -13,174 +13,7 @@ const HOTEL_IMAGES = [
   "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
 ];
 
-// Fallback mock hotels when backend is unavailable
-const MOCK_HOTELS: Hotel[] = [
-  {
-    id: 1,
-    name: "The Grand Palace",
-    location: "Paris, France",
-    stars: 5,
-    image: HOTEL_IMAGES[0],
-    description: "Experience unparalleled luxury in the heart of Paris",
-    amenities: ["Spa", "Pool", "Restaurant"],
-  },
-  {
-    id: 2,
-    name: "Azure Beach Resort",
-    location: "Maldives",
-    stars: 5,
-    image: HOTEL_IMAGES[1],
-    description: "Private villas over crystal clear waters",
-    amenities: ["Beach", "Diving", "Spa"],
-  },
-  {
-    id: 3,
-    name: "Mountain Lodge",
-    location: "Swiss Alps",
-    stars: 4,
-    image: HOTEL_IMAGES[2],
-    description: "Breathtaking alpine views and world-class skiing",
-    amenities: ["Ski", "Fireplace", "Restaurant"],
-  },
-  {
-    id: 4,
-    name: "The Ritz Continental",
-    location: "London, UK",
-    stars: 5,
-    image: HOTEL_IMAGES[3],
-    description: "Classic elegance in the heart of London",
-    amenities: ["Butler", "Tea Room", "Spa"],
-  },
-  {
-    id: 5,
-    name: "Sunset Villa Resort",
-    location: "Santorini, Greece",
-    stars: 5,
-    image: HOTEL_IMAGES[4],
-    description: "Stunning sunset views over the Aegean Sea",
-    amenities: ["Pool", "Wine Bar", "Terrace"],
-  },
-  {
-    id: 6,
-    name: "Royal Marina Hotel",
-    location: "Dubai, UAE",
-    stars: 5,
-    image: HOTEL_IMAGES[5],
-    description: "Luxury waterfront living with stunning views",
-    amenities: ["Yacht", "Beach", "Rooftop Bar"],
-  },
-];
 
-const MOCK_ROOMS: Room[] = [
-  {
-    id: 1,
-    hotelId: 1,
-    roomNumber: "101",
-    type: "Deluxe Suite",
-    price: 450,
-    capacity: 2,
-    available: true,
-  },
-  {
-    id: 2,
-    hotelId: 1,
-    roomNumber: "201",
-    type: "Royal Suite",
-    price: 850,
-    capacity: 4,
-    available: true,
-  },
-  {
-    id: 3,
-    hotelId: 2,
-    roomNumber: "101",
-    type: "Water Villa",
-    price: 1200,
-    capacity: 2,
-    available: true,
-  },
-  {
-    id: 4,
-    hotelId: 2,
-    roomNumber: "102",
-    type: "Beach Bungalow",
-    price: 750,
-    capacity: 3,
-    available: true,
-  },
-  {
-    id: 5,
-    hotelId: 3,
-    roomNumber: "301",
-    type: "Mountain View",
-    price: 380,
-    capacity: 2,
-    available: true,
-  },
-  {
-    id: 6,
-    hotelId: 3,
-    roomNumber: "302",
-    type: "Chalet Suite",
-    price: 550,
-    capacity: 4,
-    available: true,
-  },
-  {
-    id: 7,
-    hotelId: 4,
-    roomNumber: "401",
-    type: "Classic Room",
-    price: 520,
-    capacity: 2,
-    available: true,
-  },
-  {
-    id: 8,
-    hotelId: 4,
-    roomNumber: "501",
-    type: "Luxury Suite",
-    price: 980,
-    capacity: 3,
-    available: true,
-  },
-  {
-    id: 9,
-    hotelId: 5,
-    roomNumber: "101",
-    type: "Sea View Suite",
-    price: 620,
-    capacity: 2,
-    available: true,
-  },
-  {
-    id: 10,
-    hotelId: 5,
-    roomNumber: "102",
-    type: "Honeymoon Villa",
-    price: 890,
-    capacity: 2,
-    available: true,
-  },
-  {
-    id: 11,
-    hotelId: 6,
-    roomNumber: "601",
-    type: "Marina Room",
-    price: 480,
-    capacity: 2,
-    available: true,
-  },
-  {
-    id: 12,
-    hotelId: 6,
-    roomNumber: "701",
-    type: "Penthouse",
-    price: 1500,
-    capacity: 6,
-    available: true,
-  },
-];
 
 export const Hotels: React.FC = () => {
   const [hotels, setHotels] = useState<Hotel[]>([]);
@@ -227,17 +60,17 @@ export const Hotels: React.FC = () => {
           setRooms(roomsData || []);
           setFilteredHotels(enhancedHotels);
         } else {
-          // Use mock data as fallback
-          setHotels(MOCK_HOTELS);
-          setRooms(MOCK_ROOMS);
-          setFilteredHotels(MOCK_HOTELS);
+          // No hotels in database - show empty state
+          setHotels([]);
+          setRooms([]);
+          setFilteredHotels([]);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        // Use mock data on error
-        setHotels(MOCK_HOTELS);
-        setRooms(MOCK_ROOMS);
-        setFilteredHotels(MOCK_HOTELS);
+        // Show empty state on error
+        setHotels([]);
+        setRooms([]);
+        setFilteredHotels([]);
       } finally {
         setLoading(false);
       }

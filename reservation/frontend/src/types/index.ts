@@ -66,6 +66,7 @@ export interface SignupRequest {
   email: string;
   password: string;
   phone?: string;
+  isAdmin?: boolean;
 }
 
 // ============================================
@@ -113,8 +114,8 @@ export interface BookingDetails {
 
 export interface AuthContextType {
   user: User | null;
-  login: (credentials: LoginRequest) => Promise<void>;
-  signup: (data: SignupRequest) => Promise<void>;
+  login: (credentials: LoginRequest) => Promise<User>;
+  signup: (data: SignupRequest) => Promise<User>;
   logout: () => void;
   isAuthenticated: boolean;
   loading: boolean;

@@ -19,4 +19,6 @@ public class SignupRequest {
     private String name;
     
     private String phone;
+    
+    private boolean isAdmin = false;
 }

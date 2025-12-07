@@ -24,7 +24,13 @@ export const AdminLogin: React.FC = () => {
     setLoading(true);
 
     try {
-      await authService.adminLogin(formData);
+      const user = await authService.adminLogin(formData);
+      // Verify the user has ADMIN role
+      if (user.role !== "ADMIN") {
+        setError("Access denied. Admin role required.");
+        authService.logout();
+        return;
+      }
       navigate("/admin/dashboard");
     } catch (err: any) {
       setError(err.message || "Admin login failed");

@@ -11,6 +11,7 @@ export const Signup: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -31,8 +32,13 @@ export const Signup: React.FC = () => {
     setLoading(true);
 
     try {
-      await signup({ name, email, password });
-      navigate("/dashboard");
+      const user = await signup({ name, email, password, isAdmin });
+      // Redirect based on role
+      if (user.role === "ADMIN") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err: any) {
       setError(err.message || "Failed to create account. Please try again.");
     } finally {
@@ -108,6 +114,17 @@ export const Signup: React.FC = () => {
                     required
                   />
                 </div>
+              </div>
+
+              <div className="form-group">
+                <label className="admin-checkbox">
+                  <input 
+                    type="checkbox" 
+                    checked={isAdmin}
+                    onChange={(e) => setIsAdmin(e.target.checked)}
+                  />
+                  <span style={{ marginLeft: '8px' }}>Create as Admin account</span>
+                </label>
               </div>
 
               <div className="form-terms">

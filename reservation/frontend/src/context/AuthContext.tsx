@@ -35,11 +35,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /**
    * Login user with email and password
    */
-  const login = async (credentials: LoginRequest) => {
+  const login = async (credentials: LoginRequest): Promise<User> => {
     setLoading(true);
     try {
       const user = await authService.login(credentials);
       setUser(user);
+      return user;
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -51,11 +52,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   /**
    * Register new user account
    */
-  const signup = async (data: SignupRequest) => {
+  const signup = async (data: SignupRequest): Promise<User> => {
     setLoading(true);
     try {
       const user = await authService.signup(data);
       setUser(user);
+      return user;
     } catch (error) {
       console.error("Signup error:", error);
       throw error;

@@ -74,4 +74,84 @@ public class ApiController {
                 .filter(room -> room.getHotelId().equals(hotelId))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Create a new hotel (Admin only)
+     * POST /api/hotels
+     */
+    @PostMapping("/hotels")
+    public Hotel createHotel(@RequestBody Hotel hotel) {
+        return hotelRepository.save(hotel);
+    }
+
+    /**
+     * Update a hotel (Admin only)
+     * PUT /api/hotels/{id}
+     */
+    @PutMapping("/hotels/{id}")
+    public Hotel updateHotel(@PathVariable Long id, @RequestBody Hotel hotelDetails) {
+        Hotel hotel = hotelRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hotel not found with id: " + id));
+        
+        hotel.setName(hotelDetails.getName());
+        hotel.setLocation(hotelDetails.getLocation());
+        
+        return hotelRepository.save(hotel);
+    }
+
+    /**
+     * Delete a hotel (Admin only)
+     * DELETE /api/hotels/{id}
+     */
+    @DeleteMapping("/hotels/{id}")
+    public void deleteHotel(@PathVariable Long id) {
+        if (!hotelRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Hotel not found with id: " + id);
+        }
+        hotelRepository.deleteById(id);
+    }
+
+    /**
+     * Create a new room (Admin only)
+     * POST /api/rooms
+     */
+    @PostMapping("/rooms")
+    public Room createRoom(@RequestBody Room room) {
+        // Verify hotel exists
+        if (!hotelRepository.existsById(room.getHotelId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Hotel not found with id: " + room.getHotelId());
+        }
+        return roomRepository.save(room);
+    }
+
+    /**
+     * Update a room (Admin only)
+     * PUT /api/rooms/{id}
+     */
+    @PutMapping("/rooms/{id}")
+    public Room updateRoom(@PathVariable Long id, @RequestBody Room roomDetails) {
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found with id: " + id));
+        
+        room.setHotelId(roomDetails.getHotelId());
+        room.setRoomNumber(roomDetails.getRoomNumber());
+        room.setType(roomDetails.getType());
+        room.setPrice(roomDetails.getPrice());
+        room.setCapacity(roomDetails.getCapacity());
+        room.setAvailable(roomDetails.isAvailable());
+        
+        return roomRepository.save(room);
+    }
+
+    /**
+     * Delete a room (Admin only)
+     * DELETE /api/rooms/{id}
+     */
+    @DeleteMapping("/rooms/{id}")
+    public void deleteRoom(@PathVariable Long id) {
+        if (!roomRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found with id: " + id);
+        }
+        roomRepository.deleteById(id);
+    }
 }
