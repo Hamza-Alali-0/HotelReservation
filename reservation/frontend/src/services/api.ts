@@ -81,7 +81,7 @@ export const hotelService = {
   searchHotels: async (location?: string): Promise<Hotel[]> => {
     const hotels = await hotelService.getAllHotels();
     if (!location) return hotels;
-    return hotels.filter(hotel => 
+    return hotels.filter(hotel =>
       hotel.location.toLowerCase().includes(location.toLowerCase())
     );
   },
@@ -237,7 +237,7 @@ export const authService = {
     try {
       const response = await axios.post('/api/auth/login', credentials);
       const authData = response.data;
-      
+
       const user: User = {
         id: authData.id,
         email: authData.email,
@@ -246,10 +246,10 @@ export const authService = {
         token: authData.token,
         role: authData.role,
       };
-      
+
       localStorage.setItem('authToken', user.token);
       localStorage.setItem('user', JSON.stringify(user));
-      
+
       return user;
     } catch (error: any) {
       console.error('Login error:', error);
@@ -266,7 +266,7 @@ export const authService = {
     try {
       const response = await axios.post('/api/auth/admin/login', credentials);
       const authData = response.data;
-      
+
       const user: User = {
         id: authData.id,
         email: authData.email,
@@ -275,10 +275,10 @@ export const authService = {
         token: authData.token,
         role: authData.role,
       };
-      
+
       localStorage.setItem('authToken', user.token);
       localStorage.setItem('user', JSON.stringify(user));
-      
+
       return user;
     } catch (error: any) {
       console.error('Admin login error:', error);
@@ -293,9 +293,11 @@ export const authService = {
    */
   signup: async (data: SignupRequest): Promise<User> => {
     try {
+      console.log('API signup request data:', data);
       const response = await axios.post('/api/auth/signup', data);
+      console.log('API signup response:', response.data);
       const authData = response.data;
-      
+
       const user: User = {
         id: authData.id,
         email: authData.email,
@@ -304,10 +306,10 @@ export const authService = {
         token: authData.token,
         role: authData.role,
       };
-      
+
       localStorage.setItem('authToken', user.token);
       localStorage.setItem('user', JSON.stringify(user));
-      
+
       return user;
     } catch (error: any) {
       console.error('Signup error:', error);

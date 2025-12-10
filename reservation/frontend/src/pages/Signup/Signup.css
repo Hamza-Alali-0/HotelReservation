@@ -66,6 +66,23 @@
   font-weight: 700;
 }
 
+/* Admin Checkbox */
+.admin-checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #4a5568;
+  cursor: pointer;
+  padding: 12px 0;
+}
+
+.admin-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #c9a227;
+  cursor: pointer;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .form-row {

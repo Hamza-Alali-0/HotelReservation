@@ -20,5 +20,5 @@ public class SignupRequest {
     
     private String phone;
     
-    private boolean isAdmin = false;
+    private boolean admin = false;
 }

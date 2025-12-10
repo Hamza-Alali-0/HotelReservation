@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { AdminNavbar } from "@/components/AdminNavbar/AdminNavbar";
 import { hotelService } from "@/services/api";
 import "./AdminStyles.css";
 
-export const CreateHotel: React.FC = () => {
+export const EditHotel: React.FC = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const { hotelId } = useParams<{ hotelId: string }>();
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
@@ -16,6 +18,30 @@ export const CreateHotel: React.FC = () => {
     stars: 4,
     image: "",
   });
+
+  useEffect(() => {
+    loadHotel();
+  }, [hotelId]);
+
+  const loadHotel = async () => {
+    try {
+      const hotel = await hotelService.getHotelById(Number(hotelId));
+      if (hotel) {
+        setFormData({
+          name: hotel.name || "",
+          location: hotel.location || "",
+          description: hotel.description || "",
+          amenities: hotel.amenities?.join(", ") || "",
+          stars: hotel.stars || 4,
+          image: hotel.image || "",
+        });
+      }
+    } catch (err) {
+      setError("Failed to load hotel");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -29,7 +55,7 @@ export const CreateHotel: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
     setError("");
 
     try {
@@ -41,14 +67,27 @@ export const CreateHotel: React.FC = () => {
           .filter((a) => a),
       };
 
-      await hotelService.createHotel(hotelData);
+      await hotelService.updateHotel(Number(hotelId), hotelData);
       navigate("/admin/dashboard");
     } catch (err: any) {
-      setError(err.message || "Failed to create hotel");
+      setError(err.message || "Failed to update hotel");
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="admin-page">
+        <AdminNavbar />
+        <div className="admin-content admin-content--narrow">
+          <div className="admin-loading">
+            <div className="admin-spinner"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="admin-page">
@@ -68,12 +107,12 @@ export const CreateHotel: React.FC = () => {
         <div className="admin-page-header">
           <h1 className="admin-page-title">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c9a227" strokeWidth="2">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
             </svg>
-            Create New Hotel
+            Edit Hotel
           </h1>
-          <p className="admin-page-subtitle">Add a new property to your portfolio</p>
+          <p className="admin-page-subtitle">Update hotel information and images</p>
         </div>
 
         <div className="admin-form-card">
@@ -168,10 +207,10 @@ export const CreateHotel: React.FC = () => {
             <div className="admin-form-actions">
               <button
                 type="submit"
-                disabled={loading}
+                disabled={saving}
                 className="admin-btn-primary"
               >
-                {loading ? "Creating..." : "Create Hotel"}
+                {saving ? "Saving..." : "Save Changes"}
               </button>
               <button
                 type="button"

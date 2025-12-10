@@ -16,6 +16,8 @@ import {
   CreateHotel,
   ManageRooms,
   CreateRoom,
+  EditHotel,
+  EditRoom,
 } from "@/pages/Admin";
 import "./styles/globals.css";
 
@@ -26,7 +28,9 @@ import "./styles/globals.css";
 function AppContent() {
   const location = useLocation();
   const hideNavbarRoutes = ["/login", "/signup", "/admin/login"];
-  const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
+  const shouldShowNavbar = 
+    !hideNavbarRoutes.includes(location.pathname) && 
+    !location.pathname.startsWith("/admin");
 
   return (
     <div className="app">
@@ -58,6 +62,14 @@ function AppContent() {
           <Route
             path="/admin/hotel/:hotelId/create-room"
             element={<CreateRoom />}
+          />
+          <Route
+            path="/admin/edit-hotel/:hotelId"
+            element={<EditHotel />}
+          />
+          <Route
+            path="/admin/room/:roomId/edit"
+            element={<EditRoom />}
           />
         </Routes>
       </main>

@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { AdminNavbar } from "@/components/AdminNavbar/AdminNavbar";
 import { hotelService } from "@/services/api";
 import type { Hotel } from "@/types";
+import "./AdminDashboard.css";
 
 export const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadHotels();
-  }, []);
+    if (!authLoading) {
+      if (!user || user.role !== "ADMIN") {
+        navigate("/admin/login");
+        return;
+      }
+      loadHotels();
+    }
+  }, [user, authLoading, navigate]);
 
   const loadHotels = async () => {
     try {
@@ -23,86 +33,66 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("user");
-    navigate("/admin/login");
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <nav className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">
-                Admin Dashboard
-              </h1>
-            </div>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => navigate("/admin/create-hotel")}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                Create Hotel
-              </button>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">Hotel Management</h2>
-          <p className="mt-2 text-gray-600">Manage your hotels and rooms</p>
+    <div className="admin-dashboard">
+      <AdminNavbar />
+      
+      <div className="admin-dashboard-content">
+        <div className="admin-dashboard-header">
+          <h1 className="admin-dashboard-title">Hotel Management</h1>
+          <p className="admin-dashboard-subtitle">
+            Manage your hotels and rooms from one central dashboard
+          </p>
         </div>
 
-        {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading hotels...</p>
+        {loading || authLoading ? (
+          <div className="admin-loading">
+            <div className="admin-spinner"></div>
+            <p className="admin-loading-text">Loading dashboard...</p>
           </div>
         ) : hotels.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg shadow">
-            <p className="text-gray-600 text-lg">No hotels found</p>
+          <div className="admin-empty-state">
+            <div className="admin-empty-icon">🏨</div>
+            <p className="admin-empty-text">No hotels found. Create your first hotel to get started!</p>
             <button
               onClick={() => navigate("/admin/create-hotel")}
-              className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              className="admin-empty-action"
             >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
               Create Your First Hotel
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="admin-hotels-grid">
             {hotels.map((hotel) => (
-              <div
-                key={hotel.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden"
-              >
-                <div className="h-48 bg-gradient-to-r from-blue-500 to-purple-600"></div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {hotel.name}
-                  </h3>
-                  <p className="text-gray-600 mb-4">{hotel.location}</p>
-                  <div className="flex gap-2">
+              <div key={hotel.id} className="admin-hotel-card">
+                <div className="admin-hotel-image">
+                  {hotel.image ? (
+                    <img src={hotel.image} alt={hotel.name} />
+                  ) : null}
+                </div>
+                <div className="admin-hotel-content">
+                  <h3 className="admin-hotel-name">{hotel.name}</h3>
+                  <div className="admin-hotel-location">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    {hotel.location}
+                  </div>
+                  <div className="admin-hotel-actions">
                     <button
                       onClick={() => navigate(`/admin/hotel/${hotel.id}/rooms`)}
-                      className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                      className="admin-btn-rooms"
                     >
                       Manage Rooms
                     </button>
                     <button
                       onClick={() => navigate(`/admin/edit-hotel/${hotel.id}`)}
-                      className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                      className="admin-btn-edit"
                     >
                       Edit
                     </button>

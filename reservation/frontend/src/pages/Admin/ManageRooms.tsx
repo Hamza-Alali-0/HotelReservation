@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { AdminNavbar } from "@/components/AdminNavbar/AdminNavbar";
 import { hotelService, roomService } from "@/services/api";
 import type { Hotel, Room } from "@/types";
+import "./AdminStyles.css";
 
 export const ManageRooms: React.FC = () => {
   const navigate = useNavigate();
@@ -28,81 +30,104 @@ export const ManageRooms: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <nav className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <button
-                onClick={() => navigate("/admin/dashboard")}
-                className="text-blue-600 hover:text-blue-800 mr-4"
-              >
-                ← Back
-              </button>
-              <h1 className="text-2xl font-bold text-gray-900">
-                {hotel?.name} - Rooms
-              </h1>
-            </div>
-            <div className="flex items-center">
-              <button
-                onClick={() => navigate(`/admin/hotel/${hotelId}/create-room`)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                Add Room
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <div className="admin-page">
+      <AdminNavbar />
+      
+      <div className="admin-content">
+        <button 
+          onClick={() => navigate("/admin/dashboard")}
+          className="admin-back-btn"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          Back to Dashboard
+        </button>
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="admin-header-actions">
+          <div className="admin-page-header" style={{ marginBottom: 0 }}>
+            <h1 className="admin-page-title">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c9a227" strokeWidth="2">
+                <rect x="3" y="3" width="7" height="9"></rect>
+                <rect x="14" y="3" width="7" height="5"></rect>
+                <rect x="14" y="12" width="7" height="9"></rect>
+                <rect x="3" y="16" width="7" height="5"></rect>
+              </svg>
+              {hotel?.name || "Loading..."} - Rooms
+            </h1>
+            <p className="admin-page-subtitle">Manage rooms for this property</p>
+          </div>
+          <button
+            onClick={() => navigate(`/admin/hotel/${hotelId}/create-room`)}
+            className="admin-add-btn"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add Room
+          </button>
+        </div>
+
         {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="admin-loading">
+            <div className="admin-spinner"></div>
           </div>
         ) : rooms.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg shadow">
-            <p className="text-gray-600 text-lg">No rooms found</p>
+          <div className="admin-empty-state">
+            <div className="admin-empty-icon">🛏️</div>
+            <p className="admin-empty-text">No rooms found for this hotel yet.</p>
             <button
               onClick={() => navigate(`/admin/hotel/${hotelId}/create-room`)}
-              className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              className="admin-empty-action"
             >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
               Add Your First Room
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="admin-cards-grid">
             {rooms.map((room) => (
-              <div key={room.id} className="bg-white rounded-lg shadow-md p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-bold text-gray-900">
-                    {room.type}
-                  </h3>
-                  <span
-                    className={`px-2 py-1 rounded text-sm ${
-                      room.available
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {room.available ? "Available" : "Occupied"}
-                  </span>
+              <div key={room.id} className="admin-card">
+                <div className="admin-card-body">
+                  <div className="admin-card-header">
+                    <h3 className="admin-card-title">{room.type || `Room ${room.roomNumber}`}</h3>
+                    <span className={`admin-card-badge ${room.available ? 'admin-card-badge--available' : 'admin-card-badge--occupied'}`}>
+                      {room.available ? "Available" : "Occupied"}
+                    </span>
+                  </div>
+                  <div className="admin-card-price">
+                    ${room.price}<span>/night</span>
+                  </div>
+                  <div className="admin-card-meta">
+                    <div className="admin-card-meta-item">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                      </svg>
+                      {room.capacity} guests
+                    </div>
+                    <div className="admin-card-meta-item">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      </svg>
+                      {room.size || "N/A"} m²
+                    </div>
+                  </div>
+                  <div className="admin-card-actions">
+                    <button
+                      onClick={() => navigate(`/admin/room/${room.id}/edit`)}
+                      className="admin-card-btn admin-card-btn--secondary"
+                    >
+                      Edit Room
+                    </button>
+                  </div>
                 </div>
-                <p className="text-2xl font-bold text-blue-600 mb-4">
-                  ${room.price}/night
-                </p>
-                <div className="space-y-2 text-sm text-gray-600 mb-4">
-                  <p>Capacity: {room.capacity} guests</p>
-                  <p>Size: {room.size} m²</p>
-                </div>
-                <button
-                  onClick={() => navigate(`/admin/room/${room.id}/edit`)}
-                  className="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
-                >
-                  Edit Room
-                </button>
               </div>
             ))}
           </div>

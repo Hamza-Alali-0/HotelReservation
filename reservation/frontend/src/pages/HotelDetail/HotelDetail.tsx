@@ -35,36 +35,25 @@ export const HotelDetail: React.FC = () => {
         ]);
 
         if (hotelData) {
+          // Use DB data if available, otherwise fallback to defaults for meaningful display
           const enhancedHotel = {
             ...hotelData,
-            stars: 5,
-            description: `Welcome to ${hotelData.name}, a sanctuary of refined elegance in ${hotelData.location}. Our property seamlessly blends timeless sophistication with contemporary luxury, offering an unparalleled hospitality experience. Each detail has been meticulously crafted to exceed the expectations of our discerning guests.`,
-            amenities: [
-              "Spa & Wellness Center",
-              "Michelin-Star Restaurant",
-              "Infinity Pool",
-              "Private Beach Access",
-              "24/7 Concierge",
-              "Fitness Center",
-              "Business Center",
-              "Valet Parking",
-            ],
-            image: GALLERY_IMAGES[0],
+            description: hotelData.description || `Welcome to ${hotelData.name}, a sanctuary of refined elegance in ${hotelData.location}.`,
+            amenities: hotelData.amenities && hotelData.amenities.length > 0 
+              ? hotelData.amenities 
+              : ["WiFi", "Parking", "Restaurant", "24/7 Service"],
+            image: hotelData.image || GALLERY_IMAGES[0],
           };
           setHotel(enhancedHotel);
         }
 
         const hotelRooms = allRooms
           .filter((r) => r.hotelId === hotelId)
-          .map((room, index) => ({
+          .map((room) => ({
             ...room,
-            type:
-              index === 0
-                ? "Presidential Suite"
-                : index === 1
-                ? "Deluxe Room"
-                : "Executive Suite",
-            description: `Luxuriously appointed ${room.capacity}-guest accommodation featuring premium amenities and stunning views.`,
+            // Keep DB type or use generic name
+            type: room.type || `Room ${room.roomNumber}`,
+            description: room.description || `Comfortable ${room.capacity}-person room`,
           }));
 
         setRooms(hotelRooms);
@@ -79,8 +68,13 @@ export const HotelDetail: React.FC = () => {
   }, [id]);
 
   const handleBookRoom = () => {
-    navigate(`/reserve/${id}`);
+    if (id) {
+      navigate(`/reserve/${id}`);
+    } else {
+      console.error("Cannot book: Invalid Hotel ID");
+    }
   };
+
 
   if (loading) {
     return <Loading message="Loading hotel details..." fullScreen />;

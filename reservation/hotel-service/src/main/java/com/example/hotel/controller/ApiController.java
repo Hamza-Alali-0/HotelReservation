@@ -95,6 +95,10 @@ public class ApiController {
         
         hotel.setName(hotelDetails.getName());
         hotel.setLocation(hotelDetails.getLocation());
+        hotel.setDescription(hotelDetails.getDescription());
+        hotel.setStars(hotelDetails.getStars());
+        hotel.setImage(hotelDetails.getImage());
+        hotel.setAmenities(hotelDetails.getAmenities());
         
         return hotelRepository.save(hotel);
     }
@@ -139,6 +143,9 @@ public class ApiController {
         room.setPrice(roomDetails.getPrice());
         room.setCapacity(roomDetails.getCapacity());
         room.setAvailable(roomDetails.isAvailable());
+        room.setSize(roomDetails.getSize());
+        room.setDescription(roomDetails.getDescription());
+        room.setAmenities(roomDetails.getAmenities());
         
         return roomRepository.save(room);
     }

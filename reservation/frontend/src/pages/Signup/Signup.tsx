@@ -11,7 +11,7 @@ export const Signup: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [admin, setAdmin] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -32,13 +32,10 @@ export const Signup: React.FC = () => {
     setLoading(true);
 
     try {
-      const user = await signup({ name, email, password, isAdmin });
-      // Redirect based on role
-      if (user.role === "ADMIN") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/dashboard");
-      }
+      console.log('Signup data being sent:', { name, email, password: '***', admin });
+      await signup({ name, email, password, admin });
+      // Redirect to login page after successful signup
+      navigate("/login");
     } catch (err: any) {
       setError(err.message || "Failed to create account. Please try again.");
     } finally {
@@ -120,8 +117,8 @@ export const Signup: React.FC = () => {
                 <label className="admin-checkbox">
                   <input 
                     type="checkbox" 
-                    checked={isAdmin}
-                    onChange={(e) => setIsAdmin(e.target.checked)}
+                    checked={admin}
+                    onChange={(e) => setAdmin(e.target.checked)}
                   />
                   <span style={{ marginLeft: '8px' }}>Create as Admin account</span>
                 </label>
@@ -157,6 +154,12 @@ export const Signup: React.FC = () => {
             alt="Luxury Suite"
           />
           <div className="auth-image-overlay"></div>
+          <Link to="/" className="auth-home-button" aria-label="Back to Home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </Link>
           <div className="auth-image-content">
             <span className="auth-tagline">Member Benefits</span>
             <h2>Unlock Exclusive Privileges</h2>
@@ -168,6 +171,7 @@ export const Signup: React.FC = () => {
             </ul>
           </div>
         </div>
+
       </div>
     </div>
   );

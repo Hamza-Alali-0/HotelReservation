@@ -66,7 +66,7 @@ export interface SignupRequest {
   email: string;
   password: string;
   phone?: string;
-  isAdmin?: boolean;
+  admin?: boolean;
 }
 
 // ============================================

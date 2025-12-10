@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AdminNavbar } from "@/components/AdminNavbar/AdminNavbar";
 import { roomService } from "@/services/api";
 import "./AdminStyles.css";
 
-export const CreateRoom: React.FC = () => {
+export const EditRoom: React.FC = () => {
   const navigate = useNavigate();
-  const { hotelId } = useParams<{ hotelId: string }>();
-  const [loading, setLoading] = useState(false);
+  const { roomId } = useParams<{ roomId: string }>();
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [hotelId, setHotelId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     type: "",
     price: 0,
@@ -19,10 +21,34 @@ export const CreateRoom: React.FC = () => {
     available: true,
   });
 
+  useEffect(() => {
+    loadRoom();
+  }, [roomId]);
+
+  const loadRoom = async () => {
+    try {
+      const room = await roomService.getRoomById(Number(roomId));
+      if (room) {
+        setHotelId(room.hotelId);
+        setFormData({
+          type: room.type || "",
+          price: room.price || 0,
+          capacity: room.capacity || 2,
+          size: room.size || 25,
+          description: room.description || "",
+          amenities: room.amenities?.join(", ") || "",
+          available: room.available !== false,
+        });
+      }
+    } catch (err) {
+      setError("Failed to load room");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
     setFormData({
@@ -38,27 +64,40 @@ export const CreateRoom: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
     setError("");
 
     try {
       const roomData = {
         ...formData,
-        hotelId: Number(hotelId),
+        hotelId,
         amenities: formData.amenities
           .split(",")
           .map((a) => a.trim())
           .filter((a) => a),
       };
 
-      await roomService.createRoom(roomData);
+      await roomService.updateRoom(Number(roomId), roomData);
       navigate(`/admin/hotel/${hotelId}/rooms`);
     } catch (err: any) {
-      setError(err.message || "Failed to create room");
+      setError(err.message || "Failed to update room");
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="admin-page">
+        <AdminNavbar />
+        <div className="admin-content admin-content--narrow">
+          <div className="admin-loading">
+            <div className="admin-spinner"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="admin-page">
@@ -66,7 +105,7 @@ export const CreateRoom: React.FC = () => {
       
       <div className="admin-content admin-content--narrow">
         <button 
-          onClick={() => navigate(`/admin/hotel/${hotelId}/rooms`)}
+          onClick={() => navigate(hotelId ? `/admin/hotel/${hotelId}/rooms` : "/admin/dashboard")}
           className="admin-back-btn"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -78,13 +117,12 @@ export const CreateRoom: React.FC = () => {
         <div className="admin-page-header">
           <h1 className="admin-page-title">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c9a227" strokeWidth="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="12" y1="8" x2="12" y2="16"></line>
-              <line x1="8" y1="12" x2="16" y2="12"></line>
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
             </svg>
-            Add New Room
+            Edit Room
           </h1>
-          <p className="admin-page-subtitle">Create a new room for your hotel</p>
+          <p className="admin-page-subtitle">Update room details and availability</p>
         </div>
 
         <div className="admin-form-card">
@@ -125,7 +163,6 @@ export const CreateRoom: React.FC = () => {
                   value={formData.price}
                   onChange={handleChange}
                   className="admin-form-input"
-                  placeholder="199.00"
                 />
               </div>
 
@@ -168,7 +205,7 @@ export const CreateRoom: React.FC = () => {
                 value={formData.description}
                 onChange={handleChange}
                 className="admin-form-textarea"
-                placeholder="Describe the room's features, view, and ambiance..."
+                placeholder="Describe the room's features..."
               />
             </div>
 
@@ -180,7 +217,7 @@ export const CreateRoom: React.FC = () => {
                 value={formData.amenities}
                 onChange={handleChange}
                 className="admin-form-input"
-                placeholder="e.g. King bed, City view, Mini bar, Balcony, Safe"
+                placeholder="e.g. King bed, City view, Mini bar"
               />
             </div>
 
@@ -198,14 +235,14 @@ export const CreateRoom: React.FC = () => {
             <div className="admin-form-actions">
               <button
                 type="submit"
-                disabled={loading}
+                disabled={saving}
                 className="admin-btn-primary"
               >
-                {loading ? "Creating..." : "Create Room"}
+                {saving ? "Saving..." : "Save Changes"}
               </button>
               <button
                 type="button"
-                onClick={() => navigate(`/admin/hotel/${hotelId}/rooms`)}
+                onClick={() => navigate(hotelId ? `/admin/hotel/${hotelId}/rooms` : "/admin/dashboard")}
                 className="admin-btn-secondary"
               >
                 Cancel
