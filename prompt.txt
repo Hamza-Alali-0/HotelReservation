@@ -1,0 +1,53 @@
+I want you to generate a full React frontend for a small hotel reservation project. The frontend should:
+
+Pages / Features:
+
+Home page: hero section, search bar, featured hotels.
+
+Hotel listing page: filters (price, stars, location), hotel cards.
+
+Hotel detail page: images, description, amenities, availability calendar, booking button.
+
+Booking page: user details, date selection, and booking submission.
+
+User login/signup page and dashboard for viewing reservations.
+
+Navigation bar and footer, fully responsive.
+
+Backend Integration:
+
+Assume a MySQL database is connected via a REST API backend (Node.js/Express, Spring Boot, Laravel, etc.).
+
+For each page, fetch real data from API endpoints (GET, POST, PUT as needed).
+
+Use axios or fetch to communicate with the backend.
+
+Include proper error handling and loading states.
+
+Design / Styling:
+
+Use a modern, professional design inspired by big booking apps (Booking.com, Expedia).
+
+Use Tailwind CSS, Material-UI, or styled-components.
+
+Include cards, grids, image sliders, modals, rating stars, and responsive layout.
+
+State Management & Routing:
+
+Use React Router v6 for page routing.
+
+Use React hooks or Context API for state management.
+
+Code Requirements:
+
+Components should be modular and reusable.
+
+Fully commented code for each component and API call.
+
+Include all necessary files (components, pages, API service, CSS/JS).
+
+Output:
+
+Full React frontend project ready to connect with the MySQL backend.
+
+Include API integration examples for listing hotels, fetching hotel details, creating bookings, and managing user authentication.

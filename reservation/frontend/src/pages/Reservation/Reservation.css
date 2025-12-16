@@ -27,7 +27,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-container p {
@@ -96,9 +98,17 @@
 }
 
 @keyframes successPop {
-  0% { transform: scale(0); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .success-container h2 {
@@ -107,7 +117,7 @@
   margin: 0;
 }
 
-.success-container > p {
+.success-container>p {
   color: #6b7280;
   font-size: 1.1rem;
 }
@@ -149,8 +159,15 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
 /* Hero Section */
@@ -717,16 +734,16 @@
   .reservation-layout {
     grid-template-columns: 1fr;
   }
-  
+
   .booking-summary-section {
     position: static;
     order: -1;
   }
-  
+
   .hotel-summary-card {
     flex-direction: column;
   }
-  
+
   .hotel-summary-image {
     width: 100%;
     height: 200px;
@@ -737,40 +754,40 @@
   .reservation-hero {
     height: 250px;
   }
-  
+
   .reservation-hero h1 {
     font-size: 2rem;
   }
-  
+
   .reservation-container {
     padding: 1rem;
   }
-  
+
   .booking-form-section {
     padding: 1.5rem;
   }
-  
+
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;
   }
-  
+
   .room-option {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .room-image {
     width: 100%;
     height: 120px;
   }
-  
+
   .room-select-indicator {
     position: static;
     margin: 0.75rem auto 0;
     transform: none;
   }
-  
+
   .success-summary {
     flex-direction: column;
     gap: 1.5rem;
@@ -781,20 +798,20 @@
   .reservation-hero h1 {
     font-size: 1.75rem;
   }
-  
+
   .hero-badge {
     font-size: 0.8rem;
     padding: 0.4rem 1rem;
   }
-  
+
   .section-title {
     font-size: 1.1rem;
   }
-  
+
   .hotel-summary-info {
     padding: 1.25rem;
   }
-  
+
   .hotel-amenities {
     flex-wrap: wrap;
     gap: 0.5rem;

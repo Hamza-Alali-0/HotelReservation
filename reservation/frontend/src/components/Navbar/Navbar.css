@@ -185,8 +185,13 @@
   transition: all 0.3s ease;
 }
 
-.hamburger::before { top: -8px; }
-.hamburger::after { bottom: -8px; }
+.hamburger::before {
+  top: -8px;
+}
+
+.hamburger::after {
+  bottom: -8px;
+}
 
 .hamburger.active {
   background: transparent;
@@ -263,4 +268,3 @@
     text-align: center;
   }
 }
-

@@ -30,101 +30,110 @@ export const ManageRooms: React.FC = () => {
   };
 
   return (
-    <div className="admin-page">
+    <div className="admin-dashboard">
       <AdminNavbar />
-      
-      <div className="admin-content">
-        <button 
-          onClick={() => navigate("/admin/dashboard")}
-          className="admin-back-btn"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-          Back to Dashboard
-        </button>
 
-        <div className="admin-header-actions">
-          <div className="admin-page-header" style={{ marginBottom: 0 }}>
-            <h1 className="admin-page-title">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c9a227" strokeWidth="2">
-                <rect x="3" y="3" width="7" height="9"></rect>
-                <rect x="14" y="3" width="7" height="5"></rect>
-                <rect x="14" y="12" width="7" height="9"></rect>
-                <rect x="3" y="16" width="7" height="5"></rect>
-              </svg>
-              {hotel?.name || "Loading..."} - Rooms
-            </h1>
-            <p className="admin-page-subtitle">Manage rooms for this property</p>
+      {/* Hero Header Section */}
+      <div className="admin-dashboard-header-section" style={{
+        backgroundImage: hotel?.image ? `linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(26, 26, 46, 0.8) 100%), url(${hotel.image})` : undefined
+      }}>
+        <div className="admin-dashboard-container">
+          <div className="admin-header-content">
+            <button 
+              onClick={() => navigate("/admin/dashboard")}
+              className="admin-back-btn"
+              style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', marginBottom: '20px' }}
+            >
+              ← Back to Dashboard
+            </button>
+            <span className="admin-label">Property Management</span>
+            <h1 className="admin-title">{hotel?.name || "Loading..."}</h1>
+            <p className="admin-subtitle">{hotel?.location || "Manage your rooms and availability"}</p>
+            
+            <div className="admin-stats-bar">
+              <div className="admin-stat-item">
+                <span className="admin-stat-number">{rooms.length}</span>
+                <span className="admin-stat-label">Total Rooms</span>
+              </div>
+              <div className="admin-stat-item">
+                <span className="admin-stat-number">{rooms.filter(r => r.available).length}</span>
+                <span className="admin-stat-label">Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="admin-dashboard-container admin-content-section">
+        <div className="admin-section-header">
+          <div className="admin-section-title">
+            <h2>Room Inventory</h2>
+            <p>Manage room types, pricing, and availability</p>
           </div>
           <button
             onClick={() => navigate(`/admin/hotel/${hotelId}/create-room`)}
-            className="admin-add-btn"
+            className="admin-create-btn"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            Add Room
+            + Add New Room
           </button>
         </div>
 
         {loading ? (
           <div className="admin-loading">
             <div className="admin-spinner"></div>
+            <p className="admin-loading-text">Loading room configurations...</p>
           </div>
         ) : rooms.length === 0 ? (
           <div className="admin-empty-state">
             <div className="admin-empty-icon">🛏️</div>
-            <p className="admin-empty-text">No rooms found for this hotel yet.</p>
+            <p className="admin-empty-text">No rooms configured for this property yet.</p>
             <button
               onClick={() => navigate(`/admin/hotel/${hotelId}/create-room`)}
-              className="admin-empty-action"
+              className="admin-create-btn"
+              style={{ marginTop: '20px' }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-              </svg>
-              Add Your First Room
+              Add First Room
             </button>
           </div>
         ) : (
-          <div className="admin-cards-grid">
+          <div className="admin-hotels-grid">
             {rooms.map((room) => (
-              <div key={room.id} className="admin-card">
-                <div className="admin-card-body">
+              <div key={room.id} className="admin-hotel-card">
+                {/* Visual Representation of Room Type - Placeholder or Image mapping */}
+                <div className="admin-card-image" style={{ height: '180px', background: 'linear-gradient(45deg, #2c3e50, #34495e)' }}>
+                   <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.1)', fontSize: '3rem' }}>
+                      🛏️
+                   </div>
+                   <div className="admin-card-overlay"></div>
+                   <div style={{ position: 'absolute', top: '15px', right: '15px' }}>
+                      <span className={`admin-card-badge ${room.available ? 'admin-card-badge--available' : 'admin-card-badge--occupied'}`} 
+                            style={{ padding: '6px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 'bold', background: room.available ? '#10b981' : '#ef4444', color: 'white' }}>
+                        {room.available ? "Available" : "Occupied"}
+                      </span>
+                   </div>
+                </div>
+
+                <div className="admin-card-content">
                   <div className="admin-card-header">
-                    <h3 className="admin-card-title">{room.type || `Room ${room.roomNumber}`}</h3>
-                    <span className={`admin-card-badge ${room.available ? 'admin-card-badge--available' : 'admin-card-badge--occupied'}`}>
-                      {room.available ? "Available" : "Occupied"}
-                    </span>
-                  </div>
-                  <div className="admin-card-price">
-                    ${room.price}<span>/night</span>
-                  </div>
-                  <div className="admin-card-meta">
-                    <div className="admin-card-meta-item">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                      </svg>
-                      {room.capacity} guests
-                    </div>
-                    <div className="admin-card-meta-item">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                      </svg>
-                      {room.size || "N/A"} m²
+                    <h3 className="admin-hotel-title" style={{ fontSize: '1.2rem' }}>{room.type || `Room ${room.roomNumber}`}</h3>
+                    <div className="admin-hotel-stars" style={{ color: '#1a1a2e', fontWeight: 'bold' }}>
+                      ${room.price}
                     </div>
                   </div>
-                  <div className="admin-card-actions">
+                  
+                  <div className="admin-hotel-location">
+                    <span>{room.capacity} Guests</span>
+                    <span>•</span>
+                    <span>{room.size || "N/A"} m²</span>
+                  </div>
+
+                  <div className="admin-card-footer">
                     <button
                       onClick={() => navigate(`/admin/room/${room.id}/edit`)}
-                      className="admin-card-btn admin-card-btn--secondary"
+                      className="admin-action-btn btn-manage-rooms"
+                      style={{ gridColumn: 'span 2' }}
                     >
-                      Edit Room
+                      Edit Room Details
                     </button>
                   </div>
                 </div>

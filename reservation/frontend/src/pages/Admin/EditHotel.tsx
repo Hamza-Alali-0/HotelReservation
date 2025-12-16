@@ -25,19 +25,25 @@ export const EditHotel: React.FC = () => {
 
   const loadHotel = async () => {
     try {
+      console.log("Loading hotel with ID:", hotelId);
       const hotel = await hotelService.getHotelById(Number(hotelId));
+      console.log("Loaded hotel data:", hotel);
+      
       if (hotel) {
         setFormData({
           name: hotel.name || "",
           location: hotel.location || "",
           description: hotel.description || "",
-          amenities: hotel.amenities?.join(", ") || "",
+          amenities: Array.isArray(hotel.amenities) ? hotel.amenities.join(", ") : (hotel.amenities || ""),
           stars: hotel.stars || 4,
           image: hotel.image || "",
         });
+      } else {
+        setError("Hotel not found");
       }
     } catch (err) {
-      setError("Failed to load hotel");
+      console.error("Error loading hotel:", err);
+      setError("Failed to load hotel data");
     } finally {
       setLoading(false);
     }

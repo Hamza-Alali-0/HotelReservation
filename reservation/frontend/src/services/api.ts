@@ -43,7 +43,16 @@ export const hotelService = {
       return response.data;
     } catch (error) {
       console.error(`Error fetching hotel ${id}:`, error);
-      return null;
+      // Fallback: try finding in all hotels
+      try {
+        console.warn(`Fallback: fetching all hotels to find ${id}`);
+        const allHotels = await hotelService.getAllHotels();
+        const found = allHotels.find(h => h.id === id);
+        return found || null;
+      } catch (fallbackError) {
+        console.error("Fallback failed:", fallbackError);
+        return null;
+      }
     }
   },
 
@@ -133,7 +142,16 @@ export const roomService = {
       return response.data;
     } catch (error) {
       console.error(`Error fetching room ${id}:`, error);
-      return null;
+      // Fallback: try finding in all rooms (this might be heavy, but better than error)
+      try {
+        console.warn(`Fallback: fetching all rooms to find ${id}`);
+        const allRooms = await roomService.getAllRooms();
+        const found = allRooms.find(r => r.id === id);
+        return found || null;
+      } catch (fallbackError) {
+        console.error("Fallback failed:", fallbackError);
+        return null;
+      }
     }
   },
 

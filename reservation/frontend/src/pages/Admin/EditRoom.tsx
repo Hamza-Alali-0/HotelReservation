@@ -28,6 +28,8 @@ export const EditRoom: React.FC = () => {
   const loadRoom = async () => {
     try {
       const room = await roomService.getRoomById(Number(roomId));
+      console.log("Loaded room data:", room);
+
       if (room) {
         setHotelId(room.hotelId);
         setFormData({
@@ -36,12 +38,15 @@ export const EditRoom: React.FC = () => {
           capacity: room.capacity || 2,
           size: room.size || 25,
           description: room.description || "",
-          amenities: room.amenities?.join(", ") || "",
+          amenities: Array.isArray(room.amenities) ? room.amenities.join(", ") : (room.amenities || ""),
           available: room.available !== false,
         });
+      } else {
+        setError("Room not found");
       }
     } catch (err) {
-      setError("Failed to load room");
+      console.error("Error loading room:", err);
+      setError("Failed to load room details");
     } finally {
       setLoading(false);
     }
