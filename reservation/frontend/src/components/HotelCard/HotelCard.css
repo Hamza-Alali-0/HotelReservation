@@ -73,7 +73,7 @@
   z-index: 2;
 }
 
-.hotel-rating {
+.hotel-card .hotel-rating {
   position: absolute;
   bottom: 20px;
   left: 20px;
@@ -82,13 +82,13 @@
   z-index: 2;
 }
 
-.star {
+.hotel-card .star {
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.3);
   transition: color 0.3s ease;
 }
 
-.star.filled {
+.hotel-card .star.filled {
   color: #c9a227;
 }
 

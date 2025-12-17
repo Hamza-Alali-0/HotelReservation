@@ -127,6 +127,7 @@
   justify-content: center;
   align-items: center;
   gap: 48px;
+  margin-bottom: 80px; /* ensure space from bottom scroll indicator */
 }
 
 .stat-item {
@@ -158,7 +159,7 @@
 
 .scroll-indicator {
   position: absolute;
-  bottom: 80px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -169,6 +170,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
+  z-index: 2;
 }
 
 .scroll-line {
@@ -629,6 +631,7 @@
   .hero-stats {
     flex-direction: column;
     gap: 24px;
+    margin-bottom: 140px; /* more vertical spacing on small screens */
   }
 
   .stat-divider {

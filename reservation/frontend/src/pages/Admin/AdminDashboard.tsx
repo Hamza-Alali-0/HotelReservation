@@ -28,12 +28,14 @@ export const AdminDashboard: React.FC = () => {
       // Mock images if missing, just for display consistency like Home page
       const enhancedData = data.map((hotel, index) => ({
         ...hotel,
-        image: hotel.image || [
-          "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
-          "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80",
-          "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
-          "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80"
-        ][index % 4]
+        image:
+          hotel.image ||
+          [
+            "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
+            "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80",
+            "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+            "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80",
+          ][index % 4],
       }));
       setHotels(enhancedData);
     } catch (error) {
@@ -50,7 +52,7 @@ export const AdminDashboard: React.FC = () => {
   return (
     <div className="admin-dashboard">
       <AdminNavbar />
-      
+
       {/* Hero Header Section */}
       <div className="admin-dashboard-header-section">
         <div className="admin-dashboard-container">
@@ -58,9 +60,10 @@ export const AdminDashboard: React.FC = () => {
             <span className="admin-label">Admin Control Center</span>
             <h1 className="admin-title">Welcome back, {user?.name}</h1>
             <p className="admin-subtitle">
-              Oversee your property portfolio with precision. Manage hotels, rooms, and bookings from your centralized command center.
+              Oversee your property portfolio with precision. Manage hotels,
+              rooms, and bookings from your centralized command center.
             </p>
-            
+
             <div className="admin-stats-bar">
               <div className="admin-stat-item">
                 <span className="admin-stat-number">{hotels.length}</span>
@@ -86,7 +89,7 @@ export const AdminDashboard: React.FC = () => {
             <h2>Your Properties</h2>
             <p>Manage existing hotels or add new ones to your portfolio</p>
           </div>
-          <button 
+          <button
             onClick={() => navigate("/admin/create-hotel")}
             className="admin-create-btn"
           >
@@ -97,17 +100,21 @@ export const AdminDashboard: React.FC = () => {
         {loading || authLoading ? (
           <div className="admin-loading">
             <div className="admin-spinner"></div>
-            <p className="admin-loading-text">Synchronizing dashboard data...</p>
+            <p className="admin-loading-text">
+              Synchronizing dashboard data...
+            </p>
           </div>
         ) : hotels.length === 0 ? (
           <div className="admin-empty-state">
             <div className="admin-empty-icon">🏢</div>
             <h3 className="admin-empty-title">No Properties Found</h3>
-            <p className="admin-empty-text">Start building your hospitality empire by adding your first hotel.</p>
+            <p className="admin-empty-text">
+              Start building your hospitality empire by adding your first hotel.
+            </p>
             <button
               onClick={() => navigate("/admin/create-hotel")}
               className="admin-create-btn"
-              style={{ marginTop: '20px' }}
+              style={{ marginTop: "20px" }}
             >
               Create First Hotel
             </button>
@@ -127,9 +134,19 @@ export const AdminDashboard: React.FC = () => {
                       {"★".repeat(hotel.stars || 5)}
                     </div>
                   </div>
-                  
+
                   <div className="admin-hotel-location">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                       <circle cx="12" cy="10" r="3"></circle>
                     </svg>
@@ -144,7 +161,7 @@ export const AdminDashboard: React.FC = () => {
                       Manage Rooms
                     </button>
                     <button
-                      onClick={() => navigate(`/admin/edit-hotel/${hotel.id}`)}
+                      onClick={() => navigate(`/admin/hotel/${hotel.id}/edit`)}
                       className="admin-action-btn btn-edit-hotel"
                     >
                       Edit Details
