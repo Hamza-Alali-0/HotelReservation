@@ -15,7 +15,7 @@ export const AdminDashboard: React.FC = () => {
   useEffect(() => {
     if (!authLoading) {
       if (!user || user.role !== "ADMIN") {
-        navigate("/admin/login");
+        navigate("/login");
         return;
       }
       loadHotels();

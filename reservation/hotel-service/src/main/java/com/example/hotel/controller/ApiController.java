@@ -36,7 +36,7 @@ public class ApiController {
      * GET /api/hotels/{id}
      */
     @GetMapping("/hotels/{id}")
-    public Hotel getHotelById(@PathVariable Long id) {
+    public Hotel getHotelById(@PathVariable("id") Long id) {
         return hotelRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hotel not found with id: " + id));
     }
@@ -55,9 +55,17 @@ public class ApiController {
      * GET /api/rooms/{id}
      */
     @GetMapping("/rooms/{id}")
-    public Room getRoomById(@PathVariable Long id) {
-        return roomRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found with id: " + id));
+    public Room getRoomById(@PathVariable("id") Long id) {
+        try {
+            return roomRepository.findById(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found with id: " + id));
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            System.err.println("Error fetching room " + id + ": " + e.getMessage());
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching room: " + e.getMessage());
+        }
     }
 
     /**
@@ -65,7 +73,7 @@ public class ApiController {
      * GET /api/hotels/{hotelId}/rooms
      */
     @GetMapping("/hotels/{hotelId}/rooms")
-    public List<Room> getRoomsByHotelId(@PathVariable Long hotelId) {
+    public List<Room> getRoomsByHotelId(@PathVariable("hotelId") Long hotelId) {
         // Verify hotel exists
         if (!hotelRepository.existsById(hotelId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Hotel not found with id: " + hotelId);
@@ -89,7 +97,7 @@ public class ApiController {
      * PUT /api/hotels/{id}
      */
     @PutMapping("/hotels/{id}")
-    public Hotel updateHotel(@PathVariable Long id, @RequestBody Hotel hotelDetails) {
+    public Hotel updateHotel(@PathVariable("id") Long id, @RequestBody Hotel hotelDetails) {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hotel not found with id: " + id));
         
@@ -108,7 +116,7 @@ public class ApiController {
      * DELETE /api/hotels/{id}
      */
     @DeleteMapping("/hotels/{id}")
-    public void deleteHotel(@PathVariable Long id) {
+    public void deleteHotel(@PathVariable("id") Long id) {
         if (!hotelRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Hotel not found with id: " + id);
         }
@@ -133,7 +141,7 @@ public class ApiController {
      * PUT /api/rooms/{id}
      */
     @PutMapping("/rooms/{id}")
-    public Room updateRoom(@PathVariable Long id, @RequestBody Room roomDetails) {
+    public Room updateRoom(@PathVariable("id") Long id, @RequestBody Room roomDetails) {
         Room room = roomRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found with id: " + id));
         
@@ -155,7 +163,7 @@ public class ApiController {
      * DELETE /api/rooms/{id}
      */
     @DeleteMapping("/rooms/{id}")
-    public void deleteRoom(@PathVariable Long id) {
+    public void deleteRoom(@PathVariable("id") Long id) {
         if (!roomRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found with id: " + id);
         }

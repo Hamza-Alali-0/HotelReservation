@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 import {
   hotelService,
   roomService,
@@ -11,6 +12,7 @@ import "./Reservation.css";
 const Reservation: React.FC = () => {
   const { hotelId } = useParams<{ hotelId: string }>();
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
   const [hotel, setHotel] = useState<Hotel | null>(null);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
@@ -36,17 +38,31 @@ const Reservation: React.FC = () => {
   const fetchHotelAndRooms = async () => {
     try {
       setLoading(true);
+      setError(null);
       const [hotelData, roomsData] = await Promise.all([
         hotelService.getHotelById(parseInt(hotelId!)),
         roomService.getAvailableRooms(parseInt(hotelId!)),
       ]);
+
+      if (!hotelData) {
+        setError("Hotel not found. Please try another property.");
+        return;
+      }
+
       setHotel(hotelData);
-      setRooms(roomsData);
-      if (roomsData.length > 0) {
+      setRooms(roomsData || []);
+      if (roomsData && roomsData.length > 0) {
         setSelectedRoom(roomsData[0]);
       }
-    } catch (err) {
-      setError("Failed to load hotel details");
+    } catch (err: any) {
+      console.error("Error loading hotel:", err);
+      const errorMessage =
+        err.response?.status === 404
+          ? "Hotel not found. Please check the hotel ID."
+          : err.response?.status === 500
+          ? "Server error. Please try again later or contact support."
+          : "Failed to load hotel details. Please refresh the page.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -127,6 +143,14 @@ const Reservation: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!isAuthenticated) {
+      setError("Please sign in to make a reservation. Redirecting to login...");
+      setTimeout(() => {
+        navigate("/login", { state: { from: `/reserve/${hotelId}` } });
+      }, 2000);
+      return;
+    }
+
     if (!validateForm() || !selectedRoom) return;
 
     setSubmitting(true);
@@ -148,10 +172,19 @@ const Reservation: React.FC = () => {
         navigate("/history");
       }, 3000);
     } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          "Failed to create reservation. Please try again."
-      );
+      console.error("Reservation error:", err);
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        setError("Your session has expired. Please sign in again to continue.");
+        setTimeout(() => {
+          navigate("/login", { state: { from: `/reserve/${hotelId}` } });
+        }, 2000);
+      } else {
+        setError(
+          err.response?.data?.message ||
+            err.message ||
+            "Failed to create reservation. Please try again."
+        );
+      }
     } finally {
       setSubmitting(false);
     }
@@ -250,6 +283,68 @@ const Reservation: React.FC = () => {
       </div>
 
       <div className="reservation-container">
+        {/* Login Warning Banner */}
+        {!isAuthenticated && (
+          <div
+            className="auth-warning-banner"
+            style={{
+              background: "linear-gradient(135deg, #f59e0b, #d97706)",
+              color: "white",
+              padding: "1.25rem 2rem",
+              borderRadius: "12px",
+              marginBottom: "2rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              boxShadow: "0 4px 20px rgba(245, 158, 11, 0.3)",
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <div>
+              <strong style={{ display: "block", marginBottom: "0.25rem" }}>
+                Sign In Required
+              </strong>
+              <span>
+                You must be logged in to make a reservation. Please{" "}
+                <a
+                  href="/login"
+                  style={{
+                    color: "white",
+                    textDecoration: "underline",
+                    fontWeight: "bold",
+                  }}
+                >
+                  sign in
+                </a>{" "}
+                or{" "}
+                <a
+                  href="/signup"
+                  style={{
+                    color: "white",
+                    textDecoration: "underline",
+                    fontWeight: "bold",
+                  }}
+                >
+                  create an account
+                </a>{" "}
+                to continue.
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Hotel Summary Card */}
         <div className="hotel-summary-card">
           <div

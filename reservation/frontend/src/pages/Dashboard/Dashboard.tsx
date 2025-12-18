@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { reservationService } from "@/services/api";
+import { reservationService, hotelService, roomService } from "@/services/api";
 import { Loading } from "@/components";
-import type { Reservation } from "@/types";
+import type { Reservation, Hotel, Room } from "@/types";
 import "./Dashboard.css";
+
+interface EnrichedReservation extends Reservation {
+  hotel?: Hotel;
+  room?: Room;
+}
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [reservations, setReservations] = useState<EnrichedReservation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -21,13 +27,38 @@ export const Dashboard: React.FC = () => {
     const fetchReservations = async () => {
       try {
         setLoading(true);
+        setError(null);
+
+        // Fetch all reservations
         const allReservations = await reservationService.getAllReservations();
-        const userReservations = allReservations.filter(
-          (r) => r.customerName === user?.name || r.customerName === user?.email
+
+        // Enrich reservations with hotel and room details
+        const enrichedReservations = await Promise.all(
+          allReservations.map(async (reservation) => {
+            try {
+              const [hotel, room] = await Promise.all([
+                hotelService.getHotelById(reservation.hotelId),
+                roomService.getRoomById(reservation.roomId),
+              ]);
+              return {
+                ...reservation,
+                hotel: hotel || undefined,
+                room: room || undefined,
+              };
+            } catch (err) {
+              console.error(
+                `Error fetching details for reservation ${reservation.id}:`,
+                err
+              );
+              return reservation;
+            }
+          })
         );
-        setReservations(userReservations);
+
+        setReservations(enrichedReservations);
       } catch (error) {
         console.error("Error fetching reservations:", error);
+        setError("Failed to load reservations. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -38,6 +69,25 @@ export const Dashboard: React.FC = () => {
 
   if (loading) {
     return <Loading message="Loading your dashboard..." fullScreen />;
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard">
+        <div className="dashboard-container">
+          <div className="error-state">
+            <h2>Error Loading Dashboard</h2>
+            <p>{error}</p>
+            <button
+              className="btn-retry"
+              onClick={() => window.location.reload()}
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const confirmedCount = reservations.filter(
@@ -247,12 +297,18 @@ export const Dashboard: React.FC = () => {
                 <div key={reservation.id} className="reservation-item">
                   <div className="reservation-image">
                     <img
-                      src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&q=80"
-                      alt="Hotel"
+                      src={
+                        reservation.hotel?.image ||
+                        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&q=80"
+                      }
+                      alt={reservation.hotel?.name || "Hotel"}
                     />
                   </div>
                   <div className="reservation-info">
-                    <h3>Reservation #{reservation.id}</h3>
+                    <h3>
+                      {reservation.hotel?.name ||
+                        `Reservation #${reservation.id}`}
+                    </h3>
                     <p className="reservation-dates">
                       {new Date(reservation.checkin).toLocaleDateString(
                         "en-US",
@@ -272,8 +328,9 @@ export const Dashboard: React.FC = () => {
                       )}
                     </p>
                     <p className="reservation-details">
-                      Hotel ID: {reservation.hotelId} · Room #
-                      {reservation.roomId}
+                      {reservation.hotel?.location || "Location unavailable"} ·{" "}
+                      {reservation.room?.type || "Room"} · $
+                      {reservation.room?.price || "N/A"}/night
                     </p>
                   </div>
                   <div className="reservation-status">

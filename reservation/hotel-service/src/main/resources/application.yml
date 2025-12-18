@@ -11,12 +11,12 @@ spring:
     password: ""
   sql:
     init:
-      mode: always
+      mode: never
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
 
 eureka:
   client:

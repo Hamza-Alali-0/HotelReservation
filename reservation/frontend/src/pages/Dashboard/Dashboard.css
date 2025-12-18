@@ -456,6 +456,46 @@
   transform: translateY(-2px);
 }
 
+/* Error State */
+.error-state {
+  text-align: center;
+  padding: 80px 24px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.error-state h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  color: #e53e3e;
+  margin-bottom: 16px;
+}
+
+.error-state p {
+  color: #718096;
+  margin-bottom: 32px;
+  font-size: 1rem;
+}
+
+.btn-retry {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  background: #4299e1;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-retry:hover {
+  background: #3182ce;
+  transform: translateY(-2px);
+}
+
 /* Responsive */
 @media (max-width: 992px) {
   .analytics-main {

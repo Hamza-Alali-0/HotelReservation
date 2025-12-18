@@ -1,6 +1,7 @@
 package com.example.hotel.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +19,10 @@ public class Hotel {
     private int stars;
     private String image;
     
-    @ElementCollection
-    private List<String> amenities;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "hotel_amenities", joinColumns = @JoinColumn(name = "hotel_id"))
+    @Column(name = "amenity")
+    private List<String> amenities = new ArrayList<>();
 
     public Hotel() {}
     public Hotel(String name, String location, String description, int stars, String image, List<String> amenities) {
