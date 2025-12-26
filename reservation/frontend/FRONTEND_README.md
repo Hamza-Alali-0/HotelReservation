@@ -14,7 +14,7 @@ A modern, fully-functional hotel reservation system built with React, TypeScript
 - ✅ **Booking History**: Track all past and current reservations
 - ✅ **Responsive Design**: Mobile-first, fully responsive layout
 - ✅ **Modern UI**: Inspired by Booking.com/Expedia with professional design
-
+yesy 768px
 ### Pages
 
 1. **Home** - Hero section, search bar, featured hotels
