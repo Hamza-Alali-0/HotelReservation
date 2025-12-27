@@ -105,9 +105,9 @@ Placeholders for key UI screens (frontend assets live under `frontend/src/assets
 | ------------------- | --------------------- | -------------------- |
 | ![hotel][hotel-img] | ![hotel2][hotel2-img] | ![hotel3][hotel3-img]  |
 
-[hotel-img]: screens\Admin\admin_dashboard.png
+[hotel-img]: screens/Admin/admin_dashboard.png
 [hotel2-img]: screens/user/home/home4.png
-[hotel3-img]: screens\user\RESERVATION2.png
+[hotel3-img]: screens/user/RESERVATION2.png
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
