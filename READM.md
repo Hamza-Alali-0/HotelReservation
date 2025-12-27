@@ -33,6 +33,7 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 Reservation Hotel is a distributed hotel reservation platform built as a set of Spring Boot microservices and a Vite/React frontend. The system includes services for discovery, API gateway routing, authentication, hotel data, and reservations. It supports:
@@ -47,6 +48,7 @@ Reservation Hotel is a distributed hotel reservation platform built as a set of 
 ### Built With
 
 Key technologies used in this project:
+
 - Java + Spring Boot (microservices)
 - Spring Cloud / Netflix OSS (Eureka service discovery)
 - Maven (build)
@@ -56,6 +58,7 @@ Key technologies used in this project:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ARCHITECTURE -->
+
 ## Architecture
 
 The repo is organized into multiple services (each with its own `pom.xml`):
@@ -72,13 +75,14 @@ These services communicate over HTTP and register with Eureka for discovery.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- SCREENSHOTS -->
+
 ## Screenshots
 
 Placeholders for key UI screens (frontend assets live under `frontend/src/assets`):
 
-| Home/Search | Hotel Detail | Reservation/Checkout |
-|-------------|--------------|----------------------|
-| ![hotel][hotel-img] | ![hotel2][hotel2-img] | ![hotel][hotel-img] |
+| Home/Search         | Hotel Detail          | Reservation/Checkout |
+| ------------------- | --------------------- | -------------------- |
+| ![hotel][hotel-img] | ![hotel2][hotel2-img] | ![hotel][hotel-img]  |
 
 [hotel-img]: frontend/assets/hotel.jfif
 [hotel2-img]: frontend/assets/hotel2.jfif
@@ -86,6 +90,7 @@ Placeholders for key UI screens (frontend assets live under `frontend/src/assets
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 To run the project locally, follow these steps for a minimal development setup.
@@ -125,11 +130,18 @@ npm run dev
 Adjust configuration in each service's `application.yml` under `src/main/resources` for database URLs and ports if needed.
 
 <a id="contact"></a>
+
 ## Contact
 
-Project maintainer - [hamza.alali.dev@gmail.com](mailto:hamza.alali.dev@gmail.com)
+Hamza Alali - [hamza.alali.dev@gmail.com](mailto:hamza.alali.dev@gmail.com)
 
-If you want, I can help run the services or tweak the README further.
+Connect with me:
+
+- <a href="https://dev.to/@hamzaalali0" target="_blank"><img src="https://img.shields.io/badge/dev.to-0A0A0A?style=for-the-badge&logo=dev.to&logoColor=white" alt="Dev.to"></a>
+- <a href="https://www.linkedin.com/in/hamza--alali" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
+- <a href="https://github.com/hamza-alali-0" target="_blank"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+- <a href="https://www.instagram.com/alalihamza.0/" target="_blank"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"></a>
+
+Project Link: [https://github.com/Hamza-Alali-0/BudgetPlanner](https://github.com/Hamza-Alali-0/BudgetPlanner)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-   
