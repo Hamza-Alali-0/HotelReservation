@@ -99,14 +99,14 @@ These services communicate over HTTP and register with Eureka for discovery.
 
 ## Screenshots
 
-Placeholders for key UI screens (frontend assets live under `frontend/src/assets`):
+Here are some screenshots of the project:
 
 | Home/Search         | Hotel Detail          | Reservation/Checkout |
 | ------------------- | --------------------- | -------------------- |
 | ![hotel][hotel-img] | ![hotel2][hotel2-img] | ![hotel3][hotel3-img]  |
 
 [hotel-img]: screens/Admin/admin_dashboard.png
-[hotel2-img]: screens/user/home/home4.png
+[hotel2-img]: screens/user/home/home2.png
 [hotel3-img]: screens/user/RESERVATION2.png
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
