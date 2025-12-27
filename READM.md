@@ -35,6 +35,9 @@
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
+<a href="https://github.com/Hamza-Alali-0/BudgetPlanner">
+    <img src="screens/user/home/home.png" alt="Home Page" width="600">
+</a>
 
 Reservation Hotel is a distributed hotel reservation platform built as a set of Spring Boot microservices and a Vite/React frontend. The system includes services for discovery, API gateway routing, authentication, hotel data, and reservations. It supports:
 
@@ -100,11 +103,11 @@ Placeholders for key UI screens (frontend assets live under `frontend/src/assets
 
 | Home/Search         | Hotel Detail          | Reservation/Checkout |
 | ------------------- | --------------------- | -------------------- |
-| ![hotel][hotel-img] | ![hotel2][hotel2-img] | ![hotel][hotel-img]  |
+| ![hotel][hotel-img] | ![hotel2][hotel2-img] | ![hotel3][hotel3-img]  |
 
-[hotel-img]: frontend/assets/hotel.jfif
-[hotel2-img]: frontend/assets/hotel2.jfif
-
+[hotel-img]: screens\Admin\admin_dashboard.png
+[hotel2-img]: screens/user/home/home4.png
+[hotel3-img]: screens\user\RESERVATION2.png
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
