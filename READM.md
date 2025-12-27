@@ -47,13 +47,31 @@ Reservation Hotel is a distributed hotel reservation platform built as a set of 
 
 ### Built With
 
-Key technologies used in this project:
+This project is built with the following technologies:
 
-- Java + Spring Boot (microservices)
-- Spring Cloud / Netflix OSS (Eureka service discovery)
-- Maven (build)
-- Vite + React (frontend)
-- MySQL (relational datastore)
+* [![Java][Java.com]][Java-url]
+* [![Spring Boot][SpringBoot.com]][SpringBoot-url]
+* [![Spring Cloud][SpringCloud.com]][SpringCloud-url]
+* [![Maven][Maven.com]][Maven-url]
+* [![Vite][Vite.com]][Vite-url]
+* [![React][React.com]][React-url]
+* [![MySQL][MySQL.com]][MySQL-url]
+
+<!-- Reference-style links for images -->
+[Java.com]: https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white
+[Java-url]: https://www.java.com/
+[SpringBoot.com]: https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white
+[SpringBoot-url]: https://spring.io/projects/spring-boot
+[SpringCloud.com]: https://img.shields.io/badge/Spring%20Cloud-6DB33F?style=for-the-badge&logo=spring&logoColor=white
+[SpringCloud-url]: https://spring.io/projects/spring-cloud
+[Maven.com]: https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white
+[Maven-url]: https://maven.apache.org/
+[Vite.com]: https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white
+[Vite-url]: https://vitejs.dev/
+[React.com]: https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black
+[React-url]: https://reactjs.org/
+[MySQL.com]: https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white
+[MySQL-url]: https://www.mysql.com/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
