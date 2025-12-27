@@ -128,7 +128,7 @@ To run the project locally, follow these steps for a minimal development setup.
 1. Clone the repository
 
 ```sh
-git clone <repo-url-or-local-path>
+git clone [<repo-url-or-local-path>](https://github.com/Hamza-Alali-0/HotelReservation.git)
 ```
 
 2. Configure MySQL and import initial SQL files found in each service (for example `auth-service/init-users.sql` and `hotel-service/data.sql`).
