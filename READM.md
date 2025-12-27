@@ -1,0 +1,135 @@
+<a id="readme-top"></a>
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <h3 align="center">Reservation Hotel</h3>
+  <p align="center">
+    A microservices-based hotel reservation system for searching hotels, booking rooms, and managing reservations.
+  </p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#screenshots">Screenshots</a></li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+Reservation Hotel is a distributed hotel reservation platform built as a set of Spring Boot microservices and a Vite/React frontend. The system includes services for discovery, API gateway routing, authentication, hotel data, and reservations. It supports:
+
+- **Search & Discovery**: Browse and filter hotels by location, rating, and availability.
+- **Hotel Details**: View hotel information, images, amenities, and room types.
+- **Bookings**: Reserve rooms with date ranges and receive reservation confirmations.
+- **User Accounts**: Sign up, sign in, and manage user reservations (via `auth-service`).
+- **Admin Features**: Admin dashboard to manage hotels and reservations.
+- **Microservices**: Designed to run as modular services (see `api-gateway`, `auth-service`, `eureka-server`, `hotel-service`, `reservation-service`, `frontend`).
+
+### Built With
+
+Key technologies used in this project:
+- Java + Spring Boot (microservices)
+- Spring Cloud / Netflix OSS (Eureka service discovery)
+- Maven (build)
+- Vite + React (frontend)
+- MySQL (relational datastore)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- ARCHITECTURE -->
+## Architecture
+
+The repo is organized into multiple services (each with its own `pom.xml`):
+
+- `eureka-server` — service discovery
+- `api-gateway` — routing and edge concerns
+- `auth-service` — user authentication and authorization
+- `hotel-service` — hotel data and search
+- `reservation-service` — booking and reservation handling
+- `frontend` — Vite + React single-page application
+
+These services communicate over HTTP and register with Eureka for discovery.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- SCREENSHOTS -->
+## Screenshots
+
+Placeholders for key UI screens (frontend assets live under `frontend/src/assets`):
+
+| Home/Search | Hotel Detail | Reservation/Checkout |
+|-------------|--------------|----------------------|
+| ![hotel][hotel-img] | ![hotel2][hotel2-img] | ![hotel][hotel-img] |
+
+[hotel-img]: frontend/assets/hotel.jfif
+[hotel2-img]: frontend/assets/hotel2.jfif
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+To run the project locally, follow these steps for a minimal development setup.
+
+### Prerequisites
+
+- Java JDK 11+
+- Maven 3.6+
+- Node.js + npm (for the frontend)
+- MySQL (create a database and import provided SQL files where applicable)
+
+### Installation
+
+1. Clone the repository
+
+```sh
+git clone <repo-url-or-local-path>
+```
+
+2. Configure MySQL and import initial SQL files found in each service (for example `auth-service/init-users.sql` and `hotel-service/data.sql`).
+
+3. Build and run backend services (from repo root):
+
+```sh
+mvn -T 1C clean install
+mvn -pl eureka-server,auth-service,hotel-service,reservation-service,api-gateway spring-boot:run
+```
+
+4. Run the frontend (open a separate terminal):
+
+```sh
+cd frontend
+npm install
+npm run dev
+```
+
+Adjust configuration in each service's `application.yml` under `src/main/resources` for database URLs and ports if needed.
+
+<a id="contact"></a>
+## Contact
+
+Project maintainer - [hamza.alali.dev@gmail.com](mailto:hamza.alali.dev@gmail.com)
+
+If you want, I can help run the services or tweak the README further.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+   
