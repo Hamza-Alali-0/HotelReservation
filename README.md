@@ -35,7 +35,7 @@
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
-<a href="https://github.com/Hamza-Alali-0/BudgetPlanner">
+<a href="https://github.com/Hamza-Alali-0/HotelReservation">
     <img src="screens/user/home/home.png" alt="Home Page" width="600">
 </a>
 
